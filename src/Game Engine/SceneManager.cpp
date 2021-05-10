@@ -18,6 +18,7 @@ void SceneManager::Update() {
 
 void SceneManager::ShadowRender() {
 	scene->DirectionalShadowRender();
+	scene->OmniShadowRender();
 }
 
 void SceneManager::Render() {

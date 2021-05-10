@@ -70,6 +70,38 @@ void Scene::DirectionalShadowRender() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+void Scene::OmniShadowLightPass(PointLight* light) {
+	omniShadowShader->UseShader();
+	glViewport(0, 0, light->GetShadowMap()->GetShadowWidth(), light->GetShadowMap()->GetShadowHeight());
+
+	light->GetShadowMap()->Write();
+	glClear(GL_DEPTH_BUFFER_BIT);
+
+	GLuint uniformOmniLightPos = omniShadowShader->GetOmniLightPosLocation();
+	GLuint uniformFarPlane = omniShadowShader->GetFarPlaneLocation();
+
+	glm::vec3 position = light->GetGameObject()->transform->getPosition();
+	glUniform3f(uniformOmniLightPos, position.x, position.y, position.z);
+	glUniform1f(uniformFarPlane, light->GetFarPlane());
+	omniShadowShader->SetLightMatrices(light->CalculateLightTransform());
+
+	directionalShadowShader->Validate();
+	for (size_t i = 0; i < meshList.size(); i++) {
+		meshList[i]->Render(directionalShadowShader);
+	}
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void Scene::OmniShadowRender() {
+	for (size_t i = 0; i < pointLightCount; i++) {
+		OmniShadowLightPass(pointLights[i]);
+	}
+	for (size_t i = 0; i < spotLightCount; i++) {
+		OmniShadowLightPass(spotLights[i]);
+	}
+}
+
 void Scene::Render() {
 	// Sort this by each shader, not by each object
 
