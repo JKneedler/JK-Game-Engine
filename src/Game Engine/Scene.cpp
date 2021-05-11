@@ -10,8 +10,8 @@ Scene::Scene() {
 
 void Scene::SetLights(Shader* shader) {
 	shader->SetDirectionalLight(mainLight);
-	shader->SetPointLights(pointLights, pointLightCount);
-	shader->SetSpotLights(spotLights, spotLightCount);
+	shader->SetPointLights(pointLights, pointLightCount, 3, 0);
+	shader->SetSpotLights(spotLights, spotLightCount, 3 + pointLightCount, pointLightCount);
 }
 
 void Scene::AddGameObject(GameObject* newObj) {
@@ -85,9 +85,9 @@ void Scene::OmniShadowLightPass(PointLight* light) {
 	glUniform1f(uniformFarPlane, light->GetFarPlane());
 	omniShadowShader->SetLightMatrices(light->CalculateLightTransform());
 
-	directionalShadowShader->Validate();
+	omniShadowShader->Validate();
 	for (size_t i = 0; i < meshList.size(); i++) {
-		meshList[i]->Render(directionalShadowShader);
+		meshList[i]->Render(omniShadowShader);
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -111,12 +111,13 @@ void Scene::Render() {
 
 	for (size_t i = 0; i < meshList .size(); i++) {
 		Shader* shader = meshList[i]->getMaterial()->GetShader();
+		shader->Validate();
 		shader->UseShader();
 		SetLights(shader);
 		shader->SetDirectionalLightTransform(mainLight->CalculateLightTransform());
-		mainLight->GetShadowMap()->Read(GL_TEXTURE1);
-		shader->SetTexture(0);
-		shader->SetDirectionalShadowMap(1);
+		mainLight->GetShadowMap()->Read(GL_TEXTURE2);
+		shader->SetTexture(1);
+		shader->SetDirectionalShadowMap(2);
 		meshList[i]->Render();
 	}
 }

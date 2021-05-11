@@ -44,8 +44,8 @@ public:
 	GLuint GetFarPlaneLocation();
 
 	void SetDirectionalLight(DirectionalLight* dLight);
-	void SetPointLights(PointLight* pLight[], unsigned int lightCount);
-	void SetSpotLights(SpotLight* sLight[], unsigned int lightCount);
+	void SetPointLights(PointLight* pLight[], unsigned int lightCount, unsigned int textureUnit, unsigned int offset);
+	void SetSpotLights(SpotLight* sLight[], unsigned int lightCount, unsigned int textureUnit, unsigned int offset);
 	void SetTexture(GLuint textureUnit);
 	void SetDirectionalShadowMap(GLuint textureUnit);
 	void SetDirectionalLightTransform(glm::mat4 lTransform);
@@ -104,6 +104,11 @@ private:
 		GLuint uniformDirection;
 		GLuint uniformEdge;
 	} uniformSpotLight[MAX_SPOT_LIGHTS];
+
+	struct {
+		GLuint shadowMap;
+		GLuint farPlane;
+	} uniformOmniShadowMap[MAX_POINT_LIGHTS + MAX_SPOT_LIGHTS];
 
 	void CompileShader(const char* vertexCode, const char* fragmentCode);
 	void CompileShader(const char* vertexCode, const char* geometryCode, const char* fragmentCode);
