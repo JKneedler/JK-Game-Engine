@@ -50,7 +50,6 @@ int main() {
 
 ![Sandbox 2021-05-10 11-14-05-49 (4)](https://user-images.githubusercontent.com/25457814/117694592-51741800-b18d-11eb-9d25-1a2e5a02c580.gif)
 ### This project is a work in progress - Next Steps
-* Omnidirectional Shadows
 * Custom Scene file format - allow for loading of scene by file instead of hardcoding
 * Asset Memory Management outside of the Scene
 * Expand Model Importing for GameObject Component System
