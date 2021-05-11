@@ -17,6 +17,7 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Game Engine\OmniShadowMap.cpp" />
     <ClCompile Include="src\Game Engine\ShadowMap.cpp" />
     <ClCompile Include="src\Game Engine\Factories\PrimitiveFactory.cpp" />
     <ClCompile Include="src\Game Engine\EngineManager.cpp" />
@@ -41,6 +42,7 @@
     <ClCompile Include="src\Game Engine\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Game Engine\OmniShadowMap.h" />
     <ClInclude Include="src\Game Engine\ShadowMap.h" />
     <ClInclude Include="src\Game Engine\Factories\PrimitiveFactory.h" />
     <ClInclude Include="src\Game Engine\EngineManager.h" />

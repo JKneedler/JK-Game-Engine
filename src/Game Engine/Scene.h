@@ -13,6 +13,7 @@ public:
 	void SetLights(Shader* shader);
 
 	void SetDirectionalShadowShader(Shader* shader) { directionalShadowShader = shader; }
+	void SetOmniShadowShader(Shader* shader) { omniShadowShader = shader; }
 
 	void AddGameObject(GameObject* newObj);
 	void AddDirectionalLight(DirectionalLight* directLight);
@@ -22,6 +23,7 @@ public:
 	void Initialize();
 	void Update();
 	void DirectionalShadowRender();
+	void OmniShadowRender();
 	void Render();
 
 	~Scene();
@@ -37,6 +39,9 @@ private:
 	SpotLight* spotLights[MAX_SPOT_LIGHTS];
 
 	Shader* directionalShadowShader;
+	Shader* omniShadowShader;
+
+	void OmniShadowLightPass(PointLight* light);
 
 };
 

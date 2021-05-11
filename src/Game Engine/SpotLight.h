@@ -5,6 +5,7 @@ class SpotLight :
 public:
     SpotLight();
     SpotLight(GLfloat shadowWidth, GLfloat shadowHeight,
+        GLfloat near, GLfloat far,
         GLfloat red, GLfloat green, GLfloat blue,
         GLfloat aIntensity, GLfloat dIntensity,
         GLfloat con, GLfloat lin, GLfloat exp,
