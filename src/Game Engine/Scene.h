@@ -5,6 +5,7 @@
 
 #include "Shader.h"
 #include "GameObject/Components/MeshRenderer.h"
+#include "Skybox.h"
 
 class Scene {
 public:
@@ -19,6 +20,7 @@ public:
 	void AddDirectionalLight(DirectionalLight* directLight);
 	void AddPointLight(PointLight* pointLight);
 	void AddSpotLight(SpotLight* spotLight);
+	void SetSkybox(Skybox* setSkybox);
 
 	void Initialize();
 	void Update();
@@ -37,6 +39,8 @@ private:
 	DirectionalLight* mainLight;
 	PointLight* pointLights[MAX_POINT_LIGHTS];
 	SpotLight* spotLights[MAX_SPOT_LIGHTS];
+
+	Skybox* skybox;
 
 	Shader* directionalShadowShader;
 	Shader* omniShadowShader;

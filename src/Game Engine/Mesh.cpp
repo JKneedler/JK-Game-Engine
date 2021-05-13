@@ -35,7 +35,7 @@ void Mesh::CreateMesh(GLfloat* vertices, unsigned int* indices, unsigned int num
 }
 
 void Mesh::RenderMesh() {
-	// Possibly add if statement to check if VAO/VBO have data in them (!=0) and whether to draw accoringly
+	// Possibly add if statement to check if VAO/VBO have data in them (!=0) and whether to draw accordingly
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
 	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);

@@ -199,7 +199,6 @@ void Shader::SetLightMatrices(std::vector<glm::mat4> lightMatrices) {
 
 void Shader::UseShader() {
 	glUseProgram(shaderID);
-	Camera::mainCamera->SetUniforms(uniformProjection, uniformView, uniformEyePosition);
 }
 
 void Shader::ClearShader() {

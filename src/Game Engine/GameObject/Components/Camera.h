@@ -34,6 +34,8 @@ public:
 
 	glm::mat4 calculateViewMatrix();
 
+	glm::mat4 getProjection() { return projection; }
+
 	void SetUniforms(GLuint uniformProjection, GLuint uniformView, GLuint uniformEyePosition);
 
 	~Camera();
