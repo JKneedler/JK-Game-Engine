@@ -25,3 +25,6 @@
 #include "Game Engine/GameObject/Components/Transform.h"
 #include "Game Engine/Time.h"
 #include "Game Engine/Enums.h"
+#include "Game Engine/Skybox.h"
+#include "Game Engine/ShadowMap.h"
+#include "Game Engine/OmniShadowMap.h"
