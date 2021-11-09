@@ -40,6 +40,10 @@ void Scene::AddSpotLight(SpotLight* spotLight) {
 	}
 }
 
+void Scene::SetSkybox(Skybox* setSkybox) {
+	skybox = setSkybox;
+}
+
 void Scene::Initialize() {
 	for (size_t i = 0; i < objectList.size(); i++) {
 		objectList[i]->Initialize();
@@ -109,10 +113,13 @@ void Scene::Render() {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	skybox->DrawSkybox(Camera::mainCamera->calculateViewMatrix(), Camera::mainCamera->getProjection());
+
 	for (size_t i = 0; i < meshList .size(); i++) {
 		Shader* shader = meshList[i]->getMaterial()->GetShader();
 		shader->Validate();
 		shader->UseShader();
+		Camera::mainCamera->SetUniforms(shader->GetProjectionLocation(), shader->GetViewLocation(), shader->GetEyePositionLocation());
 		SetLights(shader);
 		shader->SetDirectionalLightTransform(mainLight->CalculateLightTransform());
 		mainLight->GetShadowMap()->Read(GL_TEXTURE2);
