@@ -17,6 +17,7 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Game Engine\ModelLoader.cpp" />
     <ClCompile Include="src\Game Engine\Skybox.cpp" />
     <ClCompile Include="src\Game Engine\OmniShadowMap.cpp" />
     <ClCompile Include="src\Game Engine\ShadowMap.cpp" />
@@ -43,6 +44,7 @@
     <ClCompile Include="src\Game Engine\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Game Engine\ModelLoader.h" />
     <ClInclude Include="src\Game Engine\Skybox.h" />
     <ClInclude Include="src\Game Engine\OmniShadowMap.h" />
     <ClInclude Include="src\Game Engine\ShadowMap.h" />
