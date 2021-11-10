@@ -16,9 +16,16 @@ void Scene::SetLights(Shader* shader) {
 
 void Scene::AddGameObject(GameObject* newObj) {
 	objectList.push_back(newObj);
+	AddMesh(newObj);
+}
+
+void Scene::AddMesh(GameObject* newObj) {
 	if (newObj->HasComponent(TYPES::MESH_RENDERER)) {
 		MeshRenderer* meshRenderer = (MeshRenderer*)newObj->GetComponent(TYPES::MESH_RENDERER);
 		meshList.push_back(meshRenderer);
+	}
+	for (size_t i = 0; i < newObj->children.size(); i++) {
+		AddMesh(newObj->children[i]);
 	}
 }
 
@@ -67,8 +74,8 @@ void Scene::DirectionalShadowRender() {
 	directionalShadowShader->SetDirectionalLightTransform(mainLight->CalculateLightTransform());
 
 	directionalShadowShader->Validate();
-	for (size_t i = 0; i < meshList.size(); i++) {
-		meshList[i]->Render(directionalShadowShader);
+	for (size_t i = 0; i < objectList.size(); i++) {
+		objectList[i]->Render(directionalShadowShader);
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -90,8 +97,8 @@ void Scene::OmniShadowLightPass(PointLight* light) {
 	omniShadowShader->SetLightMatrices(light->CalculateLightTransform());
 
 	omniShadowShader->Validate();
-	for (size_t i = 0; i < meshList.size(); i++) {
-		meshList[i]->Render(omniShadowShader);
+	for (size_t i = 0; i < objectList.size(); i++) {
+		objectList[i]->Render(omniShadowShader);
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -108,6 +115,7 @@ void Scene::OmniShadowRender() {
 
 void Scene::Render() {
 	// Sort this by each shader, not by each object
+	// Need to change this to do it by shader so that I can change the meshList[i]->Render call to just call the GameObject method
 
 	// Clear window
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -115,7 +123,7 @@ void Scene::Render() {
 
 	skybox->DrawSkybox(Camera::mainCamera->calculateViewMatrix(), Camera::mainCamera->getProjection());
 
-	for (size_t i = 0; i < meshList .size(); i++) {
+	for (size_t i = 0; i < meshList.size(); i++) {
 		Shader* shader = meshList[i]->getMaterial()->GetShader();
 		shader->Validate();
 		shader->UseShader();

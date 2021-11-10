@@ -5,6 +5,8 @@
 #include "Components/Transform.h"
 #include "../Enums.h"
 
+class Shader;
+
 class GameObject {
 	
 public:
@@ -17,6 +19,7 @@ public:
 
 	void Update();
 	void Render();
+	void Render(Shader* shader);
 
 	void AddComponent(BaseComponent* component);
 
@@ -24,11 +27,11 @@ public:
 	void* GetComponent(TYPES type);
 
 	Transform* transform;
+	std::vector<GameObject*> children;
 
 	~GameObject();
 
 private:
-	std::vector<GameObject*> children;
 	std::vector<BaseComponent*> components;
 };
 

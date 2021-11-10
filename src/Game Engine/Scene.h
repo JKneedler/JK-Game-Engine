@@ -3,8 +3,8 @@
 #include <vector>
 #include <string>
 
-#include "Shader.h"
 #include "GameObject/Components/MeshRenderer.h"
+#include "Shader.h"
 #include "Skybox.h"
 
 class Scene {
@@ -45,6 +45,7 @@ private:
 	Shader* directionalShadowShader;
 	Shader* omniShadowShader;
 
+	void AddMesh(GameObject* newObj);
 	void OmniShadowLightPass(PointLight* light);
 
 };

@@ -6,7 +6,7 @@ Skybox::Skybox() {
 Skybox::Skybox(std::vector<std::string> faceLocations) {
 	// Shader Setup
 	skyShader = new Shader();
-	skyShader->CreateFromFiles("Shaders/skybox.vert", "Shaders/skybox.frag");
+	skyShader->CreateFromFiles("Assets/Shaders/skybox.vert", "Assets/Shaders/skybox.frag");
 
 	uniformProjection = skyShader->GetProjectionLocation();
 	uniformView = skyShader->GetViewLocation();
