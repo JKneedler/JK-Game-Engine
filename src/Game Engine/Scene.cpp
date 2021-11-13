@@ -105,6 +105,7 @@ void Scene::OmniShadowLightPass(PointLight* light) {
 }
 
 void Scene::OmniShadowRender() {
+	// Should these methods be stored within the lights and the this method should just be calling it on the lights???
 	for (size_t i = 0; i < pointLightCount; i++) {
 		OmniShadowLightPass(pointLights[i]);
 	}
@@ -124,17 +125,40 @@ void Scene::Render() {
 	skybox->DrawSkybox(Camera::mainCamera->calculateViewMatrix(), Camera::mainCamera->getProjection());
 
 	for (size_t i = 0; i < meshList.size(); i++) {
-		Shader* shader = meshList[i]->getMaterial()->GetShader();
-		shader->Validate();
-		shader->UseShader();
-		Camera::mainCamera->SetUniforms(shader->GetProjectionLocation(), shader->GetViewLocation(), shader->GetEyePositionLocation());
-		SetLights(shader);
-		shader->SetDirectionalLightTransform(mainLight->CalculateLightTransform());
-		mainLight->GetShadowMap()->Read(GL_TEXTURE2);
-		shader->SetTexture(1);
-		shader->SetDirectionalShadowMap(2);
-		meshList[i]->Render();
+		// I think this code should actually just belong within the shader class
+		//Shader* shader = meshList[i]->getMaterial()->GetShader();
+		//shader->Validate(); //
+		//shader->UseShader(); //
+		//Camera::mainCamera->SetUniforms(shader->GetProjectionLocation(), shader->GetViewLocation(), shader->GetEyePositionLocation()); // Could just call from shader class
+		// Shader will need access to the lights in the scene, maybe this is something that should just be public access from the Engine instance call?
+		// I think in the future scene objects will be public access (through get methods such as FindObjectWithTag in Unity)
+		//SetLights(shader);
+		//shader->SetDirectionalLightTransform(mainLight->CalculateLightTransform()); //
+		//mainLight->GetShadowMap()->Read(GL_TEXTURE2); // Will just need to make another call to the SceneManager to get this information
+		//shader->SetTexture(1); //
+		//shader->SetDirectionalShadowMap(2); //
+		meshList[i]->Render(); // All of the above will be within this Render class in a call to the Shader
 	}
+}
+
+DirectionalLight* Scene::getMainLight() {
+	return mainLight;
+}
+
+PointLight** Scene::getPointLights() {
+	return pointLights;
+}
+
+SpotLight** Scene::getSpotLights() {
+	return spotLights;
+}
+
+unsigned int Scene::getPointLightCount() {
+	return pointLightCount;
+}
+
+unsigned int Scene::getSpotLightCount() {
+	return spotLightCount;
 }
 
 Scene::~Scene() {

@@ -28,3 +28,5 @@
 #include "Game Engine/Skybox.h"
 #include "Game Engine/ShadowMap.h"
 #include "Game Engine/OmniShadowMap.h"
+#include "Game Engine/AssetLoader.h"
+#include "Game Engine/AssetManager.h"

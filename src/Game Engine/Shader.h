@@ -12,10 +12,13 @@
 
 #include "CommonValues.h"
 
+class Shader;
+
 #include "DirectionalLight.h"
 #include "PointLight.h"
 #include "SpotLight.h"
 #include "GameObject/Components/Camera.h"
+#include "EngineManager.h"
 
 class Shader
 {
@@ -52,6 +55,7 @@ public:
 	void SetLightMatrices(std::vector<glm::mat4> lightMatrices);
 
 	void UseShader();
+	void RenderShader();
 	void ClearShader();
 
 	~Shader();

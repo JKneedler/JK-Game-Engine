@@ -1,5 +1,7 @@
 #pragma once
 
+class MeshRenderer;
+
 #include "../../Material.h"
 #include "../GameObject.h"
 #include "../../Mesh.h"

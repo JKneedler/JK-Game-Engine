@@ -22,6 +22,7 @@ public:
 	static Input* getInputM();
 	static SceneManager* getSceneM();
 	static Time* getTimeM();
+	static Scene* getCurrentScene();
 
 	static PrimitiveFactory* getPrimitiveF();
 

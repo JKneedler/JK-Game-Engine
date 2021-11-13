@@ -12,6 +12,10 @@ void SceneManager::LoadScene(Scene* newScene) {
 	scene = newScene;
 }
 
+Scene* SceneManager::getScene() {
+	return scene;
+}
+
 void SceneManager::Update() {
 	scene->Update();
 }

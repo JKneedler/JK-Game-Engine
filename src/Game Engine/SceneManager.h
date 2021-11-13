@@ -1,5 +1,7 @@
 #pragma once
 
+class SceneManager;
+
 #include "Scene.h"
 
 class SceneManager {
@@ -10,6 +12,7 @@ public:
 	void Initialize();
 
 	void LoadScene(Scene* newScene);
+	Scene* getScene();
 
 	void Update();
 	void ShadowRender();

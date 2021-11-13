@@ -11,6 +11,8 @@
 
 #include "CommonValues.h"
 
+class Skybox;
+
 #include "Mesh.h"
 #include "Shader.h"
 

@@ -43,10 +43,12 @@
     <ClCompile Include="src\Game Engine\Window.cpp" />
     <ClCompile Include="src\Game Engine\GameObject\Components\Transform.cpp" />
     <ClCompile Include="src\Game Engine\Time.cpp" />
+    <ClCompile Include="src\Game Engine\World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Game Engine\AssetLoader.h" />
     <ClInclude Include="src\Game Engine\AssetManager.h" />
+    <ClInclude Include="src\Game Engine\json.hpp" />
     <ClInclude Include="src\Game Engine\Skybox.h" />
     <ClInclude Include="src\Game Engine\OmniShadowMap.h" />
     <ClInclude Include="src\Game Engine\ShadowMap.h" />
@@ -75,6 +77,7 @@
     <ClInclude Include="src\JKGE.h" />
     <ClInclude Include="src\Game Engine\GameObject\Components\Transform.h" />
     <ClInclude Include="src\Game Engine\Time.h" />
+    <ClInclude Include="src\Game Engine\World.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

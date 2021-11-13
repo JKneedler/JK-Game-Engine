@@ -3,6 +3,8 @@
 #include <vector>
 #include <string>
 
+class Scene;
+
 #include "GameObject/Components/MeshRenderer.h"
 #include "Shader.h"
 #include "Skybox.h"
@@ -27,6 +29,12 @@ public:
 	void DirectionalShadowRender();
 	void OmniShadowRender();
 	void Render();
+
+	DirectionalLight* getMainLight();
+	PointLight** getPointLights();
+	SpotLight** getSpotLights();
+	unsigned int getPointLightCount();
+	unsigned int getSpotLightCount();
 
 	~Scene();
 

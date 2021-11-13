@@ -91,5 +91,10 @@ void* GameObject::GetComponent(TYPES type) {
 	return nullptr;
 }
 
+bool GameObject::NeedToDelete() {
+	return toBeDeleted;
+}
+
 GameObject::~GameObject() {
 }
+

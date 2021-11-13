@@ -2,6 +2,8 @@
 
 #include <GL/glew.h>
 
+class Material;
+
 #include "Texture.h"
 #include "Shader.h"
 

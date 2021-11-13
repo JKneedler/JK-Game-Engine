@@ -18,6 +18,7 @@ Material::Material(Shader* myShader, Texture* myTexture, GLfloat sIntensity, GLf
 }
 
 void Material::UseMaterial() {
+	shader->RenderShader();
 	glUniform1f(shader->GetSpecularIntensityLocation(), specularIntensity);
 	glUniform1f(shader->GetShininessLocation(), shininess);
 	texture->UseTexture();
