@@ -9,14 +9,15 @@
 #include "Texture.h"
 #include "Shader.h"
 #include "Material.h"
+#include "AssetLoader.h"
 #include "json.hpp"
 
 using json = nlohmann::json;
 // TODO : Models
 
-class AssetLoader {
+class AssetCache {
 public:
-	AssetLoader();
+	AssetCache();
 
 	void Initialize(const char* textureMapLoc, const char* materialMapLoc, const char* shaderMapLoc);
 
@@ -24,18 +25,15 @@ public:
 	Shader LoadShader(const char* shaderKey);
 	Material LoadMaterial(const char* materialKey);
 
-	~AssetLoader();
+	~AssetCache();
 
 private:
-	std::map<std::string, std::string> textureMap;
-	std::string defaultTextureLoc;
-	std::map<const char*, const char*> shaderMap;
-	std::map<const char*, const char*> materialMap;
-	std::map<const char*, const char*> sceneMap;
 
-	void CreateTextureAssetMap(const char* textureMapLoc);
-	void CreateShaderAssetMap(const char* shaderMapLoc);
-	void CreateMaterialAssetMap(const char* materialMapLoc);
+	AssetLoader* assetLoader;
+	std::map<std::string, Texture*> textureMap;
+	std::map<const char*, Shader*> shaderMap;
+	std::map<const char*, Material*> materialMap;
+
 	void PrintTextureMap();
 };
 

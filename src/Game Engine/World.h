@@ -15,6 +15,8 @@ public:
 	void Initialize();
 	void Update();
 	void ShadowRender();
+	void DirectionalShadowRender();
+	void OmniShadowRender();
 	void Render();
 
 	~World();
@@ -28,6 +30,11 @@ private:
 	PointLight* pointLights[MAX_POINT_LIGHTS];
 	SpotLight* spotLights[MAX_SPOT_LIGHTS];
 
+	Shader* directionalShadowShader;
+	Shader* omniShadowShader;
+
 	Skybox* skybox;
+
+	void OmniShadowLightPass(PointLight* light);
 };
 

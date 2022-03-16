@@ -124,20 +124,8 @@ void Scene::Render() {
 
 	skybox->DrawSkybox(Camera::mainCamera->calculateViewMatrix(), Camera::mainCamera->getProjection());
 
-	for (size_t i = 0; i < meshList.size(); i++) {
-		// I think this code should actually just belong within the shader class
-		//Shader* shader = meshList[i]->getMaterial()->GetShader();
-		//shader->Validate(); //
-		//shader->UseShader(); //
-		//Camera::mainCamera->SetUniforms(shader->GetProjectionLocation(), shader->GetViewLocation(), shader->GetEyePositionLocation()); // Could just call from shader class
-		// Shader will need access to the lights in the scene, maybe this is something that should just be public access from the Engine instance call?
-		// I think in the future scene objects will be public access (through get methods such as FindObjectWithTag in Unity)
-		//SetLights(shader);
-		//shader->SetDirectionalLightTransform(mainLight->CalculateLightTransform()); //
-		//mainLight->GetShadowMap()->Read(GL_TEXTURE2); // Will just need to make another call to the SceneManager to get this information
-		//shader->SetTexture(1); //
-		//shader->SetDirectionalShadowMap(2); //
-		meshList[i]->Render(); // All of the above will be within this Render class in a call to the Shader
+	for (size_t i = 0; i < objectList.size(); i++) {
+		objectList[i]->Render();
 	}
 }
 

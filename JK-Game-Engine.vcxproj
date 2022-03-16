@@ -17,8 +17,8 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Game Engine\AssetCache.cpp" />
     <ClCompile Include="src\Game Engine\AssetLoader.cpp" />
-    <ClCompile Include="src\Game Engine\AssetManager.cpp" />
     <ClCompile Include="src\Game Engine\Skybox.cpp" />
     <ClCompile Include="src\Game Engine\OmniShadowMap.cpp" />
     <ClCompile Include="src\Game Engine\ShadowMap.cpp" />
@@ -46,8 +46,8 @@
     <ClCompile Include="src\Game Engine\World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Game Engine\AssetCache.h" />
     <ClInclude Include="src\Game Engine\AssetLoader.h" />
-    <ClInclude Include="src\Game Engine\AssetManager.h" />
     <ClInclude Include="src\Game Engine\json.hpp" />
     <ClInclude Include="src\Game Engine\Skybox.h" />
     <ClInclude Include="src\Game Engine\OmniShadowMap.h" />
