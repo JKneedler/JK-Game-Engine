@@ -1,6 +1,7 @@
 #include "AssetLoader.h"
 
-AssetLoader::AssetLoader() {
+AssetLoader::AssetLoader(AssetCache* assetCache) {
+	this->assetCache = assetCache;
 }
 
 void AssetLoader::Initialize(const char* textureMapLoc, const char* materialMapLoc, const char* shaderMapLoc) {
@@ -67,27 +68,46 @@ Texture* AssetLoader::LoadTexture(const char* textureKey) {
 	return texture;
 }
 
-//Shader AssetLoader::LoadShader(const char* shaderKey) {
-//	std::map<const char*, const char*>::iterator it = shaderMap.find(shaderKey);
-//	json j;
-//
-//	// Add exception handling here to catch a parsing error and print it back out the console
-//	if (it != shaderMap.end())
-//		j = json::parse(it);
-//
-//	std::string vertexLocation = j["vertex_location"].get<std::string>();
-//	std::string fragmentLocation = j["fragment_location"].get<std::string>();
-//	Shader shader = Shader();
-//	shader.CreateFromFiles(vertexLocation.c_str(), fragmentLocation.c_str());
-//	return shader;
-//}
+Shader* AssetLoader::LoadShader(const char* shaderKey) {
+	std::map<std::string, std::string>::iterator it = shaderMap.find(shaderKey);
+	json j;
 
-// Figure out how this constructor will be called while ensuring that the asset manager is able to store the shader and texture created for it
-// Maybe this should belong in the Asset manager where it will call out to the AssetLoader to get the info(maybe the json text)
-// Should they all belong in the asset manager? Maybe this class should just worry about storing the maps -
-// - for the Textures/Shaders/Materials/Scenes/GameObjects/etc.
-Material AssetLoader::LoadMaterial(const char* materialKey) {
-	return Material();
+	// Add exception handling here to catch a parsing error and print it back out the console
+	if (it != shaderMap.end()) {
+		j = json::parse(it->second);
+	}
+	else {
+		std::cout << "Shader Map found no result for shaderKey {" << shaderKey << "} : Default shader used" << std::endl;
+	}
+
+	std::string vertexLoc = j["vertex_location"].get<std::string>();
+	std::string fragmentLoc = j["fragment_location"].get<std::string>();
+
+	Shader* shader = new Shader();
+	shader->CreateFromFiles(vertexLoc.c_str(), fragmentLoc.c_str());
+
+	return shader;
+}
+
+Material* AssetLoader::LoadMaterial(const char* materialKey) {
+	std::map<std::string, std::string>::iterator it = materialMap.find(materialKey);
+	json j;
+
+	// Add exception handling here to catch a parsing error and print it back out the console
+	if (it != materialMap.end()) {
+		j = json::parse(it->second);
+	}
+	else {
+		std::cout << "Material Map found no result for shaderKey {" << materialKey << "} : Default shader used" << std::endl;
+	}
+
+	Material material;
+	Shader* shader = assetCache->LoadShader(j["shader"].get<std::string>().c_str());
+	Texture* texture = assetCache->LoadTexture(j["texture"].get<std::string>().c_str());
+	GLfloat specularIntensity = j["specular_intensity"].get<GLfloat>();
+	GLfloat shine = j["shine"].get<GLfloat>();
+
+	return new Material(shader, texture, specularIntensity, shine);
 }
 
 AssetLoader::~AssetLoader() {

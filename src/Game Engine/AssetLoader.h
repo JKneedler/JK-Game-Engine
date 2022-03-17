@@ -5,7 +5,11 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <GL/glew.h>
 
+class AssetLoader;
+
+#include "AssetCache.h"
 #include "Texture.h"
 #include "Shader.h"
 #include "Material.h"
@@ -16,22 +20,22 @@ using json = nlohmann::json;
 
 class AssetLoader {
 public:
-	AssetLoader();
+	AssetLoader(AssetCache* assetCache);
 
 	void Initialize(const char* textureMapLoc, const char* materialMapLoc, const char* shaderMapLoc);
 
 	Texture* LoadTexture(const char* textureKey);
-	Shader LoadShader(const char* shaderKey);
-	Material LoadMaterial(const char* materialKey);
+	Shader* LoadShader(const char* shaderKey);
+	Material* LoadMaterial(const char* materialKey);
 
 	~AssetLoader();
 
 private:
+	AssetCache* assetCache;
 	std::map<std::string, std::string> textureMap;
 	std::string defaultTextureLoc;
-	std::map<const char*, const char*> shaderMap;
-	std::map<const char*, const char*> materialMap;
-	std::map<const char*, const char*> sceneMap;
+	std::map<std::string, std::string> shaderMap;
+	std::map<std::string, std::string> materialMap;
 
 	void CreateTextureAssetMap(const char* textureMapLoc);
 	void CreateShaderAssetMap(const char* shaderMapLoc);
