@@ -22,9 +22,10 @@ public:
 	void Render(Shader* shader);
 
 	void AddComponent(BaseComponent* component);
-
 	bool HasComponent(TYPES type);
 	void* GetComponent(TYPES type);
+
+	void AddChild(GameObject* child);
 
 	bool NeedToDelete();
 

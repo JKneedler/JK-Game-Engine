@@ -11,6 +11,7 @@ class EngineManager {
 public:
 	EngineManager();
 
+	//Change this to an inherited class
 	static EngineManager* getInstance() {
 		static EngineManager* instance = new EngineManager();
 		return instance;

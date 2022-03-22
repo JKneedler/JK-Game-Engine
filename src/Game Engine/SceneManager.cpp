@@ -10,6 +10,7 @@ void SceneManager::Initialize() {
 
 void SceneManager::LoadScene(Scene* newScene) {
 	scene = newScene;
+	Camera::mainCamera = scene->getSceneCamera();
 }
 
 Scene* SceneManager::getScene() {

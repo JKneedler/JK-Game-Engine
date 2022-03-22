@@ -95,6 +95,10 @@ bool GameObject::NeedToDelete() {
 	return toBeDeleted;
 }
 
+void GameObject::AddChild(GameObject* child) {
+	children.push_back(child);
+}
+
 GameObject::~GameObject() {
 }
 

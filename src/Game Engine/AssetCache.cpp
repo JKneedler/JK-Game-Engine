@@ -3,9 +3,9 @@
 AssetCache::AssetCache() {
 }
 
-void AssetCache::Initialize(const char* textureMapLoc, const char* materialMapLoc, const char* shaderMapLoc) {
+void AssetCache::Initialize(const char* textureMapLoc, const char* shaderMapLoc) {
 	assetLoader = new AssetLoader(this);
-	assetLoader->Initialize(textureMapLoc, materialMapLoc, shaderMapLoc);
+	assetLoader->Initialize(textureMapLoc, shaderMapLoc);
 }
 
 Texture* AssetCache::LoadTexture(const char* textureKey) {
@@ -41,23 +41,6 @@ Shader* AssetCache::LoadShader(const char* shaderKey) {
 		shaderMap.insert({ shaderKey, shader });
 	}
 	return shader;
-}
-
-Material* AssetCache::LoadMaterial(const char* materialKey) {
-	std::cout << "MaterialKey: " << materialKey << std::endl;
-	std::map<std::string, Material*>::iterator it = materialMap.find(materialKey);
-	Material* material;
-
-	if (it != materialMap.end()) {
-		std::cout << "Material for {" << materialKey << "} found in Cache" << std::endl;
-		material = it->second;
-	}
-	else {
-		std::cout << "Material for {" << materialKey << "} not found in Cache : Loading from AssetLoader" << std::endl;
-		material = assetLoader->LoadMaterial(materialKey);
-		materialMap.insert({ materialKey, material });
-	}
-	return material;
 }
 
 AssetCache::~AssetCache() {

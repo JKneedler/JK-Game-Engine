@@ -4,10 +4,9 @@ AssetLoader::AssetLoader(AssetCache* assetCache) {
 	this->assetCache = assetCache;
 }
 
-void AssetLoader::Initialize(const char* textureMapLoc, const char* materialMapLoc, const char* shaderMapLoc) {
+void AssetLoader::Initialize(const char* textureMapLoc, const char* shaderMapLoc) {
 	CreateTextureAssetMap(textureMapLoc);
 	CreateShaderAssetMap(shaderMapLoc);
-	CreateMaterialAssetMap(materialMapLoc);
 }
 
 void AssetLoader::CreateTextureAssetMap(const char* textureMapLoc) {
@@ -25,27 +24,12 @@ void AssetLoader::CreateTextureAssetMap(const char* textureMapLoc) {
 	// To get the actual value of the string without quotes use this = ["fileLoc"].get<std::string>().c_str()
 }
 
-void AssetLoader::PrintTextureMap() {
-	for (auto itr = textureMap.begin(); itr != textureMap.end(); ++itr) {
-		std::cout << itr->first << '\t' << itr->second << std::endl;
-	}
-}
-
 void AssetLoader::CreateShaderAssetMap(const char* shaderMapLoc) {
 	std::ifstream i(shaderMapLoc);
 	json j;
 	i >> j;
 	for (auto it : j.items()) {
 		shaderMap.insert({ it.key().c_str(), it.value().dump().c_str() });
-	}
-}
-
-void AssetLoader::CreateMaterialAssetMap(const char* materialMapLoc) {
-	std::ifstream i(materialMapLoc);
-	json j;
-	i >> j;
-	for (auto it : j.items()) {
-		materialMap.insert({ it.key().c_str(), it.value().dump().c_str() });
 	}
 }
 
@@ -82,32 +66,17 @@ Shader* AssetLoader::LoadShader(const char* shaderKey) {
 
 	std::string vertexLoc = j["vertex_location"].get<std::string>();
 	std::string fragmentLoc = j["fragment_location"].get<std::string>();
+	std::string geometricLoc = j["geometric_location"].get<std::string>();
 
 	Shader* shader = new Shader();
-	shader->CreateFromFiles(vertexLoc.c_str(), fragmentLoc.c_str());
-
-	return shader;
-}
-
-Material* AssetLoader::LoadMaterial(const char* materialKey) {
-	std::map<std::string, std::string>::iterator it = materialMap.find(materialKey);
-	json j;
-
-	// Add exception handling here to catch a parsing error and print it back out the console
-	if (it != materialMap.end()) {
-		j = json::parse(it->second);
+	if (!geometricLoc.empty()) {
+		shader->CreateFromFiles(vertexLoc.c_str(), geometricLoc.c_str(), fragmentLoc.c_str());
 	}
 	else {
-		std::cout << "Material Map found no result for shaderKey {" << materialKey << "} : Default shader used" << std::endl;
+		shader->CreateFromFiles(vertexLoc.c_str(), fragmentLoc.c_str());
 	}
 
-	Material material;
-	Shader* shader = assetCache->LoadShader(j["shader"].get<std::string>().c_str());
-	Texture* texture = assetCache->LoadTexture(j["texture"].get<std::string>().c_str());
-	GLfloat specularIntensity = j["specular_intensity"].get<GLfloat>();
-	GLfloat shine = j["shine"].get<GLfloat>();
-
-	return new Material(shader, texture, specularIntensity, shine);
+	return shader;
 }
 
 AssetLoader::~AssetLoader() {

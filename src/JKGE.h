@@ -30,3 +30,4 @@
 #include "Game Engine/OmniShadowMap.h"
 #include "Game Engine/AssetLoader.h"
 #include "Game Engine/AssetCache.h"
+#include "Game Engine/SceneLoader.h"

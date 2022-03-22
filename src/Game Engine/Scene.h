@@ -23,6 +23,7 @@ public:
 	void AddPointLight(PointLight* pointLight);
 	void AddSpotLight(SpotLight* spotLight);
 	void SetSkybox(Skybox* setSkybox);
+	void SetCamera(Camera* camera) { sceneCamera = camera; }
 
 	void Initialize();
 	void Update();
@@ -35,6 +36,7 @@ public:
 	SpotLight** getSpotLights();
 	unsigned int getPointLightCount();
 	unsigned int getSpotLightCount();
+	Camera* getSceneCamera() { return sceneCamera; }
 
 	~Scene();
 
@@ -52,6 +54,8 @@ private:
 
 	Shader* directionalShadowShader;
 	Shader* omniShadowShader;
+
+	Camera* sceneCamera;
 
 	void AddMesh(GameObject* newObj);
 	void OmniShadowLightPass(PointLight* light);
