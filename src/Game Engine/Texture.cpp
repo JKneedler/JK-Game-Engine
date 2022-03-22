@@ -7,7 +7,6 @@ Texture::Texture() {
 	width = 0;
 	height = 0;
 	bitDepth = 0;
-	fileLocation = (char*)"";
 }
 
 Texture::Texture(const char* fileLoc) {
@@ -15,7 +14,7 @@ Texture::Texture(const char* fileLoc) {
 	width = 0;
 	height = 0;
 	bitDepth = 0;
-	fileLocation = fileLoc;
+	strcpy_s(fileLocation, sizeof fileLocation, fileLoc);
 }
 
 bool Texture::LoadTexture() {
@@ -54,7 +53,6 @@ void Texture::ClearTexture() {
 	width = 0;
 	height = 0;
 	bitDepth = 0;
-	fileLocation = (char*)"";
 }
 
 Texture::~Texture() {

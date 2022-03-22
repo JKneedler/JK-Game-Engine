@@ -1,7 +1,10 @@
 #pragma once
 
+class PrimitiveFactory;
+
 #include "../GameObject/GameObject.h"
 #include "../GameObject/Components/MeshRenderer.h"
+#include "../Mesh.h"
 
 enum PRIMITIVES {
 	PLANE,

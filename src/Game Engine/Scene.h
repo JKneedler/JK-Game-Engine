@@ -3,8 +3,10 @@
 #include <vector>
 #include <string>
 
-#include "Shader.h"
+class Scene;
+
 #include "GameObject/Components/MeshRenderer.h"
+#include "Shader.h"
 #include "Skybox.h"
 
 class Scene {
@@ -21,12 +23,20 @@ public:
 	void AddPointLight(PointLight* pointLight);
 	void AddSpotLight(SpotLight* spotLight);
 	void SetSkybox(Skybox* setSkybox);
+	void SetCamera(Camera* camera) { sceneCamera = camera; }
 
 	void Initialize();
 	void Update();
 	void DirectionalShadowRender();
 	void OmniShadowRender();
 	void Render();
+
+	DirectionalLight* getMainLight();
+	PointLight** getPointLights();
+	SpotLight** getSpotLights();
+	unsigned int getPointLightCount();
+	unsigned int getSpotLightCount();
+	Camera* getSceneCamera() { return sceneCamera; }
 
 	~Scene();
 
@@ -45,6 +55,9 @@ private:
 	Shader* directionalShadowShader;
 	Shader* omniShadowShader;
 
+	Camera* sceneCamera;
+
+	void AddMesh(GameObject* newObj);
 	void OmniShadowLightPass(PointLight* light);
 
 };
