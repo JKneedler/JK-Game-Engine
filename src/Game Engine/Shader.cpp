@@ -201,6 +201,23 @@ void Shader::UseShader() {
 	glUseProgram(shaderID);
 }
 
+void Shader::RenderShader() {
+	EngineManager* engine = engine->getInstance();
+	Scene* scene = engine->getCurrentScene();
+	Validate();
+	UseShader();
+	Camera::mainCamera->SetUniforms(GetProjectionLocation(), GetViewLocation(), GetEyePositionLocation());
+	DirectionalLight* mainLight = scene->getMainLight();
+	unsigned int pointLightCount = scene->getPointLightCount();
+	SetDirectionalLight(mainLight);
+	SetPointLights(scene->getPointLights(), pointLightCount, 3, 0);
+	SetSpotLights(scene->getSpotLights(), scene->getSpotLightCount(), 3 + pointLightCount, pointLightCount);
+	SetDirectionalLightTransform(mainLight->CalculateLightTransform());
+	mainLight->GetShadowMap()->Read(GL_TEXTURE2);
+	SetTexture(1);
+	SetDirectionalShadowMap(2);
+}
+
 void Shader::ClearShader() {
 	if (shaderID != 0) {
 		glDeleteProgram(shaderID);

@@ -32,6 +32,10 @@ Time* EngineManager::getTimeM() {
 	return getInstance()->time;
 }
 
+Scene* EngineManager::getCurrentScene() {
+	return getInstance()->sceneManager->getScene();
+}
+
 PrimitiveFactory* EngineManager::getPrimitiveF() {
 	return getInstance()->primitiveFactory;
 }

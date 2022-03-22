@@ -17,6 +17,9 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Game Engine\SceneLoader.cpp" />
+    <ClCompile Include="src\Game Engine\AssetCache.cpp" />
+    <ClCompile Include="src\Game Engine\AssetLoader.cpp" />
     <ClCompile Include="src\Game Engine\Skybox.cpp" />
     <ClCompile Include="src\Game Engine\OmniShadowMap.cpp" />
     <ClCompile Include="src\Game Engine\ShadowMap.cpp" />
@@ -41,8 +44,13 @@
     <ClCompile Include="src\Game Engine\Window.cpp" />
     <ClCompile Include="src\Game Engine\GameObject\Components\Transform.cpp" />
     <ClCompile Include="src\Game Engine\Time.cpp" />
+    <ClCompile Include="src\Game Engine\World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Game Engine\SceneLoader.h" />
+    <ClInclude Include="src\Game Engine\AssetCache.h" />
+    <ClInclude Include="src\Game Engine\AssetLoader.h" />
+    <ClInclude Include="src\Game Engine\json.hpp" />
     <ClInclude Include="src\Game Engine\Skybox.h" />
     <ClInclude Include="src\Game Engine\OmniShadowMap.h" />
     <ClInclude Include="src\Game Engine\ShadowMap.h" />
@@ -71,6 +79,7 @@
     <ClInclude Include="src\JKGE.h" />
     <ClInclude Include="src\Game Engine\GameObject\Components\Transform.h" />
     <ClInclude Include="src\Game Engine\Time.h" />
+    <ClInclude Include="src\Game Engine\World.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -124,6 +133,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)../ExternalLibs/GLEW/include;$(SolutionDir)../ExternalLibs/GLFW/include;$(SolutionDir)../ExternalLibs/glm;$(SolutionDir)../ExternalLibs/ASSIMP/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,6 +151,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)../ExternalLibs/GLEW/include;$(SolutionDir)../ExternalLibs/GLFW/include;$(SolutionDir)../ExternalLibs/glm;$(SolutionDir)../ExternalLibs/ASSIMP/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

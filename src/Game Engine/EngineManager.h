@@ -11,6 +11,7 @@ class EngineManager {
 public:
 	EngineManager();
 
+	//Change this to an inherited class
 	static EngineManager* getInstance() {
 		static EngineManager* instance = new EngineManager();
 		return instance;
@@ -22,6 +23,7 @@ public:
 	static Input* getInputM();
 	static SceneManager* getSceneM();
 	static Time* getTimeM();
+	static Scene* getCurrentScene();
 
 	static PrimitiveFactory* getPrimitiveF();
 

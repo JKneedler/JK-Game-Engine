@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 
 #include "CommonValues.h"
+#include <string>
 
 class Texture
 {
@@ -21,6 +22,6 @@ private:
 	GLuint textureID;
 	int width, height, bitDepth;
 
-	const char* fileLocation;
+	char fileLocation[100] = "";
 };
 

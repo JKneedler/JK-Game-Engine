@@ -11,6 +11,8 @@
 
 #include "CommonValues.h"
 
+class Skybox;
+
 #include "Mesh.h"
 #include "Shader.h"
 
@@ -18,7 +20,7 @@ class Skybox {
 public:
 	Skybox();
 
-	Skybox(std::vector<std::string> faceLocations);
+	Skybox(Shader* skyShader, std::vector<std::string> faceLocations);
 
 	void DrawSkybox(glm::mat4 viewMatrix, glm::mat4 projectionMatrix);
 

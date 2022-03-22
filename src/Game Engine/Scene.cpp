@@ -16,9 +16,16 @@ void Scene::SetLights(Shader* shader) {
 
 void Scene::AddGameObject(GameObject* newObj) {
 	objectList.push_back(newObj);
+	AddMesh(newObj);
+}
+
+void Scene::AddMesh(GameObject* newObj) {
 	if (newObj->HasComponent(TYPES::MESH_RENDERER)) {
 		MeshRenderer* meshRenderer = (MeshRenderer*)newObj->GetComponent(TYPES::MESH_RENDERER);
 		meshList.push_back(meshRenderer);
+	}
+	for (size_t i = 0; i < newObj->children.size(); i++) {
+		AddMesh(newObj->children[i]);
 	}
 }
 
@@ -67,8 +74,8 @@ void Scene::DirectionalShadowRender() {
 	directionalShadowShader->SetDirectionalLightTransform(mainLight->CalculateLightTransform());
 
 	directionalShadowShader->Validate();
-	for (size_t i = 0; i < meshList.size(); i++) {
-		meshList[i]->Render(directionalShadowShader);
+	for (size_t i = 0; i < objectList.size(); i++) {
+		objectList[i]->Render(directionalShadowShader);
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -90,14 +97,15 @@ void Scene::OmniShadowLightPass(PointLight* light) {
 	omniShadowShader->SetLightMatrices(light->CalculateLightTransform());
 
 	omniShadowShader->Validate();
-	for (size_t i = 0; i < meshList.size(); i++) {
-		meshList[i]->Render(omniShadowShader);
+	for (size_t i = 0; i < objectList.size(); i++) {
+		objectList[i]->Render(omniShadowShader);
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void Scene::OmniShadowRender() {
+	// Should these methods be stored within the lights and the this method should just be calling it on the lights???
 	for (size_t i = 0; i < pointLightCount; i++) {
 		OmniShadowLightPass(pointLights[i]);
 	}
@@ -108,6 +116,7 @@ void Scene::OmniShadowRender() {
 
 void Scene::Render() {
 	// Sort this by each shader, not by each object
+	// Need to change this to do it by shader so that I can change the meshList[i]->Render call to just call the GameObject method
 
 	// Clear window
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -115,18 +124,29 @@ void Scene::Render() {
 
 	skybox->DrawSkybox(Camera::mainCamera->calculateViewMatrix(), Camera::mainCamera->getProjection());
 
-	for (size_t i = 0; i < meshList .size(); i++) {
-		Shader* shader = meshList[i]->getMaterial()->GetShader();
-		shader->Validate();
-		shader->UseShader();
-		Camera::mainCamera->SetUniforms(shader->GetProjectionLocation(), shader->GetViewLocation(), shader->GetEyePositionLocation());
-		SetLights(shader);
-		shader->SetDirectionalLightTransform(mainLight->CalculateLightTransform());
-		mainLight->GetShadowMap()->Read(GL_TEXTURE2);
-		shader->SetTexture(1);
-		shader->SetDirectionalShadowMap(2);
-		meshList[i]->Render();
+	for (size_t i = 0; i < objectList.size(); i++) {
+		objectList[i]->Render();
 	}
+}
+
+DirectionalLight* Scene::getMainLight() {
+	return mainLight;
+}
+
+PointLight** Scene::getPointLights() {
+	return pointLights;
+}
+
+SpotLight** Scene::getSpotLights() {
+	return spotLights;
+}
+
+unsigned int Scene::getPointLightCount() {
+	return pointLightCount;
+}
+
+unsigned int Scene::getSpotLightCount() {
+	return spotLightCount;
 }
 
 Scene::~Scene() {
