@@ -159,6 +159,7 @@ void SceneLoader::CreateSkybox(json skyboxJson, Scene& scene) {
 
 void SceneLoader::CreateGameObjects(json gameObjectsJson, Scene& scene) {
 	for (auto it : gameObjectsJson.items()) {
+		std::cout << "Creating {" << it.key() << "}" << std::endl;
 		GameObject* gameObject = CreateGameObject(it.value());
 		scene.AddGameObject(gameObject);
 	}
@@ -171,6 +172,9 @@ GameObject* SceneLoader::CreateGameObject(json gameObjectJson) {
 	}
 	else if (gameObjectJson["Mesh"]["Model"] != "") {
 		// Add model support
+		std::string modelName = gameObjectJson["Mesh"]["Model"].get<std::string>();
+		ModelData* modelData = assetCache->LoadModelData(modelName.c_str());
+		gameObject = CreateModelDataGameObject(gameObjectJson, modelData);
 	}
 	else {
 		// Fill in a default
@@ -187,9 +191,13 @@ GameObject* SceneLoader::CreateGameObject(json gameObjectJson) {
 GameObject* SceneLoader::CreatePrimitiveGameObject(json gameObjectJson) {
 	int primitiveNum = std::stoi(gameObjectJson["Mesh"]["Primitive"].get<std::string>());
 	Mesh* mesh = engine->getPrimitiveF()->CreatePrimitive(static_cast<PRIMITIVES>(primitiveNum));
+	Material* material = GetMaterial(gameObjectJson["Material"], "");
 
-	Material* material = GetMaterial(gameObjectJson["Material"]);
-	MeshRenderer* renderer = new MeshRenderer(mesh, material);
+	std::vector<Mesh*> meshes = std::vector<Mesh*>();
+	meshes.push_back(mesh);
+	std::vector<Material*> materials = std::vector<Material*>();
+	materials.push_back(material);
+	MeshRenderer* renderer = new MeshRenderer(meshes, materials);
 	GameObject* gameObject = new GameObject(renderer);
 
 	std::vector<GLfloat> startPosition = gameObjectJson["Position"];
@@ -205,9 +213,55 @@ GameObject* SceneLoader::CreatePrimitiveGameObject(json gameObjectJson) {
 	return gameObject;
 }
 
-Material* SceneLoader::GetMaterial(json materialJson) {
+GameObject* SceneLoader::CreateModelDataGameObject(json gameObjectJson, ModelData* modelData) {
+	GameObject* gameObject = new GameObject();
+
+	if (!modelData->meshes.empty()) {
+		std::vector<Mesh*> meshes = std::vector<Mesh*>();
+		std::vector<Material*> materials = std::vector<Material*>();
+		for (size_t i = 0; i < modelData->meshes.size(); i++) {
+			MeshData* meshData = modelData->meshes[i];
+
+			Mesh* mesh = new Mesh();
+			mesh->CreateMesh(&meshData->vertices[0], &meshData->indices[0], meshData->vertices.size(), meshData->indices.size());
+			meshes.push_back(mesh);
+
+			Material* material = GetMaterial(gameObjectJson["Material"], meshData->texture.c_str());
+			materials.push_back(material);
+		}
+
+		gameObject->AddComponent(new MeshRenderer(meshes, materials));
+	}
+
+	for (size_t i = 0; i < modelData->children.size(); i++) {
+		GameObject* gameObjectChild = CreateModelDataGameObject(gameObjectJson, modelData->children[i]);
+		gameObject->AddChild(gameObjectChild);
+	}
+
+	std::vector<GLfloat> startPosition = gameObjectJson["Position"];
+	std::vector<GLfloat> startRotation = gameObjectJson["Rotation"];
+	std::vector<GLfloat> startScale = gameObjectJson["Scale"];
+
+	gameObject->transform->SetPosition(glm::vec3(startPosition[0], startPosition[1], startPosition[2]));
+	gameObject->transform->Rotate(startRotation[0], AXIS::WORLD_X);
+	gameObject->transform->Rotate(startRotation[1], AXIS::WORLD_Y);
+	gameObject->transform->Rotate(startRotation[2], AXIS::WORLD_Z);
+	gameObject->transform->SetScale(glm::vec3(startScale[0], startScale[1], startScale[2]));
+
+	return gameObject;
+}
+
+Material* SceneLoader::GetMaterial(json materialJson, const char* textureLoc) {
 	Shader* shader = assetCache->LoadShader(materialJson["Shader"].get<std::string>().c_str());
-	Texture* texture = assetCache->LoadTexture(materialJson["Texture"].get<std::string>().c_str());
+	Texture* texture = nullptr;
+	if ((textureLoc != NULL) && (textureLoc[0] == '\0')) {
+		texture = assetCache->LoadTexture(materialJson["Texture"].get<std::string>().c_str());
+	}
+	else {
+		std::cout << "Texture Loc : {" << textureLoc << "}" << std::endl;
+		texture = new Texture(textureLoc);
+	}
+	texture->LoadTexture();
 	GLfloat specularIntensity = materialJson["Specular_Intensity"].get<GLfloat>();
 	GLfloat shine = materialJson["Shine"].get<GLfloat>();
 	return new Material(shader, texture, specularIntensity, shine);

@@ -30,18 +30,27 @@ void Model::LoadModel(const std::string& fileName) {
 }
 
 void Model::LoadNode(aiNode* node, const aiScene* scene) {
-	for (size_t i = 0; i < node->mNumMeshes; i++) {
+
+
+
+	// WHAT DOES A NODE WITH MULTIPLE MESHES LOOK LIKE
+	// Mess around with different models online/with blender 
+	// Make the ModelLoader class just print out a full overview of the model with all of the nodes/meshes/materials
+
+
+
+	for (size_t i = 0; i < node->mNumMeshes; i++) {				// Creates a Mesh based off of each leaf node (basic component)
 		printf("Mesh (%d) loading...", i);
 		LoadMesh(scene->mMeshes[node->mMeshes[i]], scene);
 	}
 
-	for (size_t i = 0; i < node->mNumChildren; i++) {
+	for (size_t i = 0; i < node->mNumChildren; i++) {			// Dives deeper into each of the children of this node
 		printf("Going to children...");
 		LoadNode(node->mChildren[i], scene);
 	}
 }
 
-void Model::LoadMesh(aiMesh* mesh, const aiScene* scene) {
+void Model::LoadMesh(aiMesh* mesh, const aiScene* scene) {		// Creates the leaf node Mesh
 	std::vector<GLfloat> vertices;
 	std::vector<unsigned int> indices;
 
@@ -66,10 +75,10 @@ void Model::LoadMesh(aiMesh* mesh, const aiScene* scene) {
 	Mesh* newMesh = new Mesh();
 	newMesh->CreateMesh(&vertices[0], &indices[0], vertices.size(), indices.size());
 	meshList.push_back(newMesh);
-	meshToTex.push_back(mesh->mMaterialIndex);
+	meshToTex.push_back(mesh->mMaterialIndex);					// Finds the material linked to this Mesh based off the index
 }
 
-void Model::LoadMaterials(const aiScene* scene) {
+void Model::LoadMaterials(const aiScene* scene) {				// Loads all materials included in the entire Model at once
 	textureList.resize(scene->mNumMaterials);
 
 	for (size_t i = 0; i < scene->mNumMaterials; i++) {
@@ -96,7 +105,7 @@ void Model::LoadMaterials(const aiScene* scene) {
 		}
 
 		if (!textureList[i]) {
-			textureList[i] = new Texture("Textures/plain.png");
+			textureList[i] = new Texture("Assets/Textures/plain.png");
 			textureList[i]->LoadTexture();
 		}
 	}

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -17,6 +17,7 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Game Engine\ModelLoader.cpp" />
     <ClCompile Include="src\Game Engine\SceneLoader.cpp" />
     <ClCompile Include="src\Game Engine\AssetCache.cpp" />
     <ClCompile Include="src\Game Engine\AssetLoader.cpp" />
@@ -47,6 +48,9 @@
     <ClCompile Include="src\Game Engine\World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Game Engine\MeshData.h" />
+    <ClInclude Include="src\Game Engine\ModelData.h" />
+    <ClInclude Include="src\Game Engine\ModelLoader.h" />
     <ClInclude Include="src\Game Engine\SceneLoader.h" />
     <ClInclude Include="src\Game Engine\AssetCache.h" />
     <ClInclude Include="src\Game Engine\AssetLoader.h" />

@@ -7,6 +7,10 @@
 #include <fstream>
 #include <GL/glew.h>
 
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 class AssetLoader;
 
 #include "AssetCache.h"
@@ -14,6 +18,7 @@ class AssetLoader;
 #include "Shader.h"
 #include "Material.h"
 #include "json.hpp"
+#include "ModelData.h"
 
 using json = nlohmann::json;
 // TODO : Models
@@ -22,10 +27,11 @@ class AssetLoader {
 public:
 	AssetLoader(AssetCache* assetCache);
 
-	void Initialize(const char* textureMapLoc, const char* shaderMapLoc);
+	void Initialize(const char* textureMapLoc, const char* shaderMapLoc, const char* modelMapLoc);
 
 	Texture* LoadTexture(const char* textureKey);
 	Shader* LoadShader(const char* shaderKey);
+	ModelData* LoadModelData(const char* modelKey);
 
 	~AssetLoader();
 
@@ -33,9 +39,18 @@ private:
 	AssetCache* assetCache;
 	std::map<std::string, std::string> textureMap;
 	std::string defaultTextureLoc;
+	std::string baseTextureFolder;
 	std::map<std::string, std::string> shaderMap;
+	std::string baseShaderFolder;
+	std::map < std::string, std::string> modelMap;
+	std::string baseModelFolder;
 
 	void CreateTextureAssetMap(const char* textureMapLoc);
 	void CreateShaderAssetMap(const char* shaderMapLoc);
+	void CreateModelAssetMap(const char* modelMapLoc);
+
+	ModelData* LoadModelNode(ModelData* modelParent, aiNode* node, const aiScene* scene, const char* modelKey);
+	MeshData* LoadNodeMesh(aiMesh* mesh, const aiScene* scene, const char* modelKey);
+	std::string GetMeshTexture(int materialNum, const aiScene* scene, const char* modelKey);
 };
 

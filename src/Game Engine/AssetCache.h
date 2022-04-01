@@ -12,6 +12,7 @@ class AssetCache;
 #include "Shader.h"
 #include "Material.h"
 #include "AssetLoader.h"
+#include "ModelData.h"
 #include "json.hpp"
 
 using json = nlohmann::json;
@@ -21,10 +22,11 @@ class AssetCache {
 public:
 	AssetCache();
 
-	void Initialize(const char* textureMapLoc, const char* shaderMapLoc);
+	void Initialize(const char* textureMapLoc, const char* shaderMapLoc, const char* modelMapLoc);
 
 	Texture* LoadTexture(const char* textureKey);
 	Shader* LoadShader(const char* shaderKey);
+	ModelData* LoadModelData(const char* modelKey);
 
 	~AssetCache();
 
@@ -33,5 +35,6 @@ private:
 	AssetLoader* assetLoader;
 	std::map<std::string, Texture*> textureMap;
 	std::map<std::string, Shader*> shaderMap;
+	std::map<std::string, ModelData*> modelMap;
 };
 

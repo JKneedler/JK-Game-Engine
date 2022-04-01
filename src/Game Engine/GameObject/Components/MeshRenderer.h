@@ -11,7 +11,7 @@ class MeshRenderer :
 
 public:
     MeshRenderer();
-    MeshRenderer(Mesh* myMesh, Material* myMaterial);
+    MeshRenderer(std::vector<Mesh*> myMeshes, std::vector<Material*> myMaterials);
 
     void Initialize();
     void Start();
@@ -20,15 +20,13 @@ public:
     void Render();
     void Render(Shader* shader);
 
-    Material* getMaterial() { return material; };
-
     TYPES GetType() { return MESH_RENDERER; };
 
     ~MeshRenderer();
 
 private:
-    Mesh* mesh;
-    Material* material;
+    std::vector<Mesh*> meshes;
+    std::vector<Material*> materials;
 
 };
 

@@ -7,12 +7,16 @@
 #include <fstream>
 #include <GL/glew.h>
 
+class SceneLoader;
+
 #include "AssetCache.h"
 #include "Texture.h"
 #include "Shader.h"
 #include "Material.h"
 #include "Scene.h"
 #include "json.hpp"
+#include "ModelData.h"
+#include "MeshData.h"
 
 using json = nlohmann::json;
 
@@ -40,6 +44,7 @@ private:
 	void CreateGameObjects(json gameObjectsJson, Scene& scene);
 	GameObject* CreateGameObject(json gameObjectsJson);
 	GameObject* CreatePrimitiveGameObject(json gameObjectJson);
-	Material* GetMaterial(json materialJson);
+	GameObject* CreateModelDataGameObject(json gameObjectJson, ModelData* modelData);
+	Material* GetMaterial(json materialJson, const char* textureLoc);
 };
 
