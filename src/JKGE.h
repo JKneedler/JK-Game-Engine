@@ -31,3 +31,6 @@
 #include "Game Engine/AssetLoader.h"
 #include "Game Engine/AssetCache.h"
 #include "Game Engine/SceneLoader.h"
+#include "Game Engine/ModelLoader.h"
+#include "Game Engine/ModelData.h"
+#include "Game Engine/MeshData.h"

@@ -3,9 +3,9 @@
 AssetCache::AssetCache() {
 }
 
-void AssetCache::Initialize(const char* textureMapLoc, const char* shaderMapLoc) {
+void AssetCache::Initialize(const char* textureMapLoc, const char* shaderMapLoc, const char* modelMapLoc) {
 	assetLoader = new AssetLoader(this);
-	assetLoader->Initialize(textureMapLoc, shaderMapLoc);
+	assetLoader->Initialize(textureMapLoc, shaderMapLoc, modelMapLoc);
 }
 
 Texture* AssetCache::LoadTexture(const char* textureKey) {
@@ -22,12 +22,11 @@ Texture* AssetCache::LoadTexture(const char* textureKey) {
 		texture = assetLoader->LoadTexture(textureKey);
 		textureMap.insert({ textureKey, texture });
 	}
-	texture->LoadTexture();
 	return texture;
 }
 
 Shader* AssetCache::LoadShader(const char* shaderKey) {
-	std::cout << "TextureKey: " << shaderKey << std::endl;
+	std::cout << "ShaderKey: " << shaderKey << std::endl;
 	std::map<std::string, Shader*>::iterator it = shaderMap.find(shaderKey);
 	Shader* shader;
 
@@ -41,6 +40,23 @@ Shader* AssetCache::LoadShader(const char* shaderKey) {
 		shaderMap.insert({ shaderKey, shader });
 	}
 	return shader;
+}
+
+ModelData* AssetCache::LoadModelData(const char* modelKey) {
+	std::cout << "ModelKey: " << modelKey << std::endl;
+	std::map<std::string, ModelData*>::iterator it = modelMap.find(modelKey);
+	ModelData* modelData;
+
+	if (it != modelMap.end()) {
+		std::cout << "Shader for {" << modelKey << "} found in Cache" << std::endl;
+		modelData = it->second;
+	}
+	else {
+		std::cout << "Shader for {" << modelKey << "} not found in Cache : Loading from AssetLoader" << std::endl;
+		modelData = assetLoader->LoadModelData(modelKey);
+		modelMap.insert({ modelKey, modelData });
+	}
+	return modelData;
 }
 
 AssetCache::~AssetCache() {

@@ -30,6 +30,15 @@ void Model::LoadModel(const std::string& fileName) {
 }
 
 void Model::LoadNode(aiNode* node, const aiScene* scene) {
+
+
+
+	// WHAT DOES A NODE WITH MULTIPLE MESHES LOOK LIKE
+	// Mess around with different models online/with blender 
+	// Make the ModelLoader class just print out a full overview of the model with all of the nodes/meshes/materials
+
+
+
 	for (size_t i = 0; i < node->mNumMeshes; i++) {				// Creates a Mesh based off of each leaf node (basic component)
 		printf("Mesh (%d) loading...", i);
 		LoadMesh(scene->mMeshes[node->mMeshes[i]], scene);
@@ -96,7 +105,7 @@ void Model::LoadMaterials(const aiScene* scene) {				// Loads all materials incl
 		}
 
 		if (!textureList[i]) {
-			textureList[i] = new Texture("Textures/plain.png");
+			textureList[i] = new Texture("Assets/Textures/plain.png");
 			textureList[i]->LoadTexture();
 		}
 	}
