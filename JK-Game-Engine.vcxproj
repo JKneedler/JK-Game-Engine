@@ -17,6 +17,14 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Tools\BaseDebugWindow.cpp" />
+    <ClCompile Include="imgui\imgui.cpp" />
+    <ClCompile Include="imgui\imgui_demo.cpp" />
+    <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="imgui\imgui_tables.cpp" />
+    <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\Game Engine\ModelLoader.cpp" />
     <ClCompile Include="src\Game Engine\SceneLoader.cpp" />
     <ClCompile Include="src\Game Engine\AssetCache.cpp" />
@@ -29,10 +37,10 @@
     <ClCompile Include="src\Game Engine\SceneManager.cpp" />
     <ClCompile Include="src\Game Engine\Scene.cpp" />
     <ClCompile Include="src\Game Engine\Input.cpp" />
-    <ClCompile Include="src\Game Engine\GameObject\BaseComponent.cpp" />
-    <ClCompile Include="src\Game Engine\GameObject\Components\MeshRenderer.cpp" />
-    <ClCompile Include="src\Game Engine\GameObject\GameObject.cpp" />
-    <ClCompile Include="src\Game Engine\GameObject\Components\Camera.cpp" />
+    <ClCompile Include="src\Game Engine\Objects\GameObject\BaseComponent.cpp" />
+    <ClCompile Include="src\Game Engine\Objects\GameObject\Components\MeshRenderer.cpp" />
+    <ClCompile Include="src\Game Engine\Objects\GameObject\GameObject.cpp" />
+    <ClCompile Include="src\Game Engine\Objects\GameObject\Components\Camera.cpp" />
     <ClCompile Include="src\Game Engine\DirectionalLight.cpp" />
     <ClCompile Include="src\Game Engine\Light.cpp" />
     <ClCompile Include="src\Game Engine\Material.cpp" />
@@ -43,11 +51,22 @@
     <ClCompile Include="src\Game Engine\SpotLight.cpp" />
     <ClCompile Include="src\Game Engine\Texture.cpp" />
     <ClCompile Include="src\Game Engine\Window.cpp" />
-    <ClCompile Include="src\Game Engine\GameObject\Components\Transform.cpp" />
+    <ClCompile Include="src\Game Engine\Objects\GameObject\Components\Transform.cpp" />
     <ClCompile Include="src\Game Engine\Time.cpp" />
     <ClCompile Include="src\Game Engine\World.cpp" />
+    <ClCompile Include="ViewableProperty.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Tools\BaseDebugWindow.h" />
+    <ClInclude Include="imgui\imconfig.h" />
+    <ClInclude Include="imgui\imgui.h" />
+    <ClInclude Include="imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="imgui\imgui_internal.h" />
+    <ClInclude Include="imgui\imstb_rectpack.h" />
+    <ClInclude Include="imgui\imstb_textedit.h" />
+    <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="src\Game Engine\MeshData.h" />
     <ClInclude Include="src\Game Engine\ModelData.h" />
     <ClInclude Include="src\Game Engine\ModelLoader.h" />
@@ -64,10 +83,10 @@
     <ClInclude Include="src\Game Engine\Scene.h" />
     <ClInclude Include="src\Game Engine\Input.h" />
     <ClInclude Include="src\Game Engine\Enums.h" />
-    <ClInclude Include="src\Game Engine\GameObject\Components\MeshRenderer.h" />
-    <ClInclude Include="src\Game Engine\GameObject\BaseComponent.h" />
-    <ClInclude Include="src\Game Engine\GameObject\GameObject.h" />
-    <ClInclude Include="src\Game Engine\GameObject\Components\Camera.h" />
+    <ClInclude Include="src\Game Engine\Objects\GameObject\Components\MeshRenderer.h" />
+    <ClInclude Include="src\Game Engine\Objects\GameObject\BaseComponent.h" />
+    <ClInclude Include="src\Game Engine\Objects\GameObject\GameObject.h" />
+    <ClInclude Include="src\Game Engine\Objects\GameObject\Components\Camera.h" />
     <ClInclude Include="src\Game Engine\CommonValues.h" />
     <ClInclude Include="src\Game Engine\DirectionalLight.h" />
     <ClInclude Include="src\Game Engine\Light.h" />
@@ -81,9 +100,10 @@
     <ClInclude Include="src\Game Engine\Texture.h" />
     <ClInclude Include="src\Game Engine\Window.h" />
     <ClInclude Include="src\JKGE.h" />
-    <ClInclude Include="src\Game Engine\GameObject\Components\Transform.h" />
+    <ClInclude Include="src\Game Engine\Objects\GameObject\Components\Transform.h" />
     <ClInclude Include="src\Game Engine\Time.h" />
     <ClInclude Include="src\Game Engine\World.h" />
+    <ClInclude Include="ViewableProperty.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

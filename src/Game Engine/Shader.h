@@ -17,7 +17,7 @@ class Shader;
 #include "DirectionalLight.h"
 #include "PointLight.h"
 #include "SpotLight.h"
-#include "GameObject/Components/Camera.h"
+#include "Objects/GameObject/Components/Camera.h"
 #include "EngineManager.h"
 
 class Shader

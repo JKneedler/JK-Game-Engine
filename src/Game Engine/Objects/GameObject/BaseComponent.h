@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Enums.h"
+#include "../../Enums.h"
 
 class Shader;
 class GameObject;

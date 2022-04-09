@@ -10,7 +10,6 @@ Input::Input(GLFWwindow* window) {
 	yChange = 0.0f;
 
 	createCallbacks(window);
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 void Input::createCallbacks(GLFWwindow* window) {

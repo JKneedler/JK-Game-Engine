@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "GameObject/GameObject.h"
+#include "Objects/GameObject/GameObject.h"
 #include "ShadowMap.h"
 
 class Light : 

@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 
-#include "GameObject/GameObject.h"
+#include "Objects/GameObject/GameObject.h"
 #include "Skybox.h"
 
 class World {

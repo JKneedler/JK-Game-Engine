@@ -2,8 +2,8 @@
 
 class PrimitiveFactory;
 
-#include "../GameObject/GameObject.h"
-#include "../GameObject/Components/MeshRenderer.h"
+#include "../Objects/GameObject/GameObject.h"
+#include "../Objects/GameObject/Components/MeshRenderer.h"
 #include "../Mesh.h"
 
 enum PRIMITIVES {

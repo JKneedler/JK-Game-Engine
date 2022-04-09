@@ -5,6 +5,8 @@
 #include "SceneManager.h"
 #include "Time.h"
 #include "Factories/PrimitiveFactory.h"
+#include "../../imgui/imgui.h"
+#include "../../imgui/imgui_impl_opengl3.h"
 
 class EngineManager {
 

@@ -2,9 +2,9 @@
 
 class MeshRenderer;
 
-#include "../../Material.h"
+#include "../../../Material.h"
 #include "../GameObject.h"
-#include "../../Mesh.h"
+#include "../../../Mesh.h"
 
 class MeshRenderer :
     public BaseComponent {

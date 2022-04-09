@@ -5,7 +5,7 @@
 
 class Scene;
 
-#include "GameObject/Components/MeshRenderer.h"
+#include "Objects/GameObject/Components/MeshRenderer.h"
 #include "Shader.h"
 #include "Skybox.h"
 

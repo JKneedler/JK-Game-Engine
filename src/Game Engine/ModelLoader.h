@@ -10,8 +10,8 @@
 
 #include "Mesh.h"
 #include "Texture.h"
-#include "GameObject/GameObject.h"
-#include "GameObject/Components/MeshRenderer.h"
+#include "Objects/GameObject/GameObject.h"
+#include "Objects/GameObject/Components/MeshRenderer.h"
 
 class ModelLoader {
 public:

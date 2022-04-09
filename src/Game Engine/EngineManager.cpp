@@ -53,6 +53,8 @@ void EngineManager::Update() {
 
 	glfwPollEvents();
 
+	ImGui::Render();
+
 	engine->sceneManager->Update();
 
 	//Shadow Render
@@ -63,6 +65,8 @@ void EngineManager::Update() {
 	engine->sceneManager->Render();
 
 	glUseProgram(0);
+
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	engine->getWindowM()->SwapBuffers();
 }

@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "Components/Transform.h"
-#include "../Enums.h"
+#include "../../Enums.h"
 
 class Shader;
 
