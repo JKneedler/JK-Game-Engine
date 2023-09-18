@@ -4,10 +4,11 @@ AssetLoader::AssetLoader(AssetCache* assetCache) {
 	this->assetCache = assetCache;
 }
 
-void AssetLoader::Initialize(const char* textureMapLoc, const char* shaderMapLoc, const char* modelMapLoc) {
+void AssetLoader::Initialize(const char* textureMapLoc, const char* shaderMapLoc, const char* modelMapLoc, const char* materialMapLoc) {
 	CreateTextureAssetMap(textureMapLoc);
 	CreateShaderAssetMap(shaderMapLoc);
 	CreateModelAssetMap(modelMapLoc);
+	CreateMaterialAssetMap(materialMapLoc);
 }
 
 void AssetLoader::CreateTextureAssetMap(const char* textureMapLoc) {
@@ -53,6 +54,19 @@ void AssetLoader::CreateModelAssetMap(const char* modelMapLoc) {
 	}
 }
 
+void AssetLoader::CreateMaterialAssetMap(const char* materialMapLoc) {
+	std::ifstream i(materialMapLoc);
+	json j;
+	i >> j;
+	for (auto a = j.begin(); a != j.end(); ++a) {
+		std::map<std::string, std::string>::iterator iterator = materialMap.begin();
+		if (a.key().compare("Texture Base Folder") == 0) {
+			baseTextureFolder = a.value()["FolderLoc"].get<std::string>();
+		}
+		materialMap.insert(iterator, { a.key(), a.value().dump() });
+	}
+}
+
 Texture* AssetLoader::LoadTexture(const char* textureKey) {
 	std::map<std::string, std::string>::iterator it = textureMap.find(textureKey);
 	json j;
@@ -64,7 +78,7 @@ Texture* AssetLoader::LoadTexture(const char* textureKey) {
 		fileLoc = baseTextureFolder + j["fileLoc"].get<std::string>();
 	}
 	else {
-		std::cout << "Texture Map found no result for textureKey {" << textureKey << "} : Default texture used" << std::endl;
+		std::cout << "WARNING: Texture Map found no result for textureKey {" << textureKey << "} : Default texture used" << std::endl;
 		fileLoc = baseTextureFolder + defaultTextureLoc;
 	}
 
@@ -81,7 +95,7 @@ Shader* AssetLoader::LoadShader(const char* shaderKey) {
 		j = json::parse(it->second);
 	}
 	else {
-		std::cout << "Shader Map found no result for shaderKey {" << shaderKey << "} : Default shader used" << std::endl;
+		std::cout << "WARNING: Shader Map found no result for shaderKey {" << shaderKey << "} : Default shader used" << std::endl;
 	}
 
 	std::string vertexLoc = baseShaderFolder + j["vertex_location"].get<std::string>();
@@ -99,6 +113,33 @@ Shader* AssetLoader::LoadShader(const char* shaderKey) {
 	return shader;
 }
 
+Material* AssetLoader::LoadMaterial(const char* materialKey) {
+	std::map<std::string, std::string>::iterator it = materialMap.find(materialKey);
+	json j;
+
+	// Add exception handling here to catch a parsing error and print it back out the console
+	if (it != materialMap.end()) {
+		j = json::parse(it->second);
+	}
+	else {
+		std::cout << "WARNING: Material Map found no result for materialKey {" << materialKey << "} : Default dull material used" << std::endl;
+		return assetCache->LoadMaterial("Default Dull");
+	}
+
+	if (!j.contains("shader") || !j.contains("texture") || !j.contains("specular_intensity") || !j.contains("shine")) {
+		std::cout << "WARNING: Material Map not configured correctly, using default dull material." << std::endl;
+		return assetCache->LoadMaterial("Default Dull");
+	}
+
+	Shader* shader = assetCache->LoadShader(j["shader"].get<std::string>().c_str());
+
+	Texture* texture = assetCache->LoadTexture(j["texture"].get<std::string>().c_str());
+	texture->LoadTexture();
+
+	Material* material = new Material(shader, texture, j["specular_intensity"].get<GLfloat>(), j["shine"].get<GLfloat>());
+	return material;
+}
+
 ModelData* AssetLoader::LoadModelData(const char* modelKey) {
 	std::map<std::string, std::string>::iterator it = modelMap.find(modelKey);
 	json j;
@@ -108,7 +149,7 @@ ModelData* AssetLoader::LoadModelData(const char* modelKey) {
 		j = json::parse(it->second);
 	}
 	else {
-		std::cout << "Model Map found no result for modelKey {" << modelKey << "}" << std::endl;
+		std::cout << "ERROR: Model Map found no result for modelKey {" << modelKey << "}" << std::endl;
 	}
 
 	Assimp::Importer importer;
@@ -182,27 +223,26 @@ MeshData* AssetLoader::LoadNodeMesh(aiMesh* mesh, const aiScene* scene, const ch
 		}
 	}
 
-	std::string textureLoc = GetMeshTexture(mesh->mMaterialIndex, scene, modelKey);
-	MeshData* meshData = new MeshData(vertices, indices, textureLoc);
+	MeshData* meshData = new MeshData(vertices, indices);
 	return meshData;
 }
 
-std::string AssetLoader::GetMeshTexture(int materialNum, const aiScene* scene, const char* modelKey) {
-	aiMaterial* material = scene->mMaterials[materialNum];
-
-	std::string texPath = "Assets/Textures/Plain.png";
-
-	if (material->GetTextureCount(aiTextureType_DIFFUSE)) {
-		aiString path;
-		if (material->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS) {
-			int idx = std::string(path.data).rfind("\\");
-			std::string filename = std::string(path.data).substr(idx + 1);
-
-			texPath = std::string("Assets/Textures/") + modelKey + std::string("/") + filename;
-		}
-	}
-	return texPath;
-}
+//std::string AssetLoader::GetMeshTexture(int materialNum, const aiScene* scene, const char* modelKey) {
+//	aiMaterial* material = scene->mMaterials[materialNum];
+//
+//	std::string texPath = "Assets/Textures/Plain.png";
+//
+//	if (material->GetTextureCount(aiTextureType_DIFFUSE)) {
+//		aiString path;
+//		if (material->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS) {
+//			int idx = std::string(path.data).rfind("\\");
+//			std::string filename = std::string(path.data).substr(idx + 1);
+//
+//			texPath = std::string("Assets/Textures/") + modelKey + std::string("/") + filename;
+//		}
+//	}
+//	return texPath;
+//}
 
 AssetLoader::~AssetLoader() {
 }

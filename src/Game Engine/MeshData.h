@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 
 #include <vector>
 #include <string>
@@ -12,16 +12,12 @@ class MeshData {
 public:
 
 	MeshData(std::vector<GLfloat> vertices,
-		std::vector<unsigned int> indices,
-		std::string texture) : 
+		std::vector<unsigned int> indices) :
 		vertices(vertices),
-		indices(indices),
-		texture(texture) {};
+		indices(indices) {};
 
 	std::vector<GLfloat> vertices;
 	std::vector<unsigned int> indices;
-
-	std::string texture;
 
 	~MeshData() {};
 };

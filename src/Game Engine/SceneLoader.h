@@ -42,9 +42,9 @@ private:
 	void CreateSkybox(json skyboxJson, Scene& scene);
 
 	void CreateGameObjects(json gameObjectsJson, Scene& scene);
-	GameObject* CreateGameObject(json gameObjectsJson);
+	GameObject* CreateGameObject(const char* goName, json gameObjectsJson);
 	GameObject* CreatePrimitiveGameObject(json gameObjectJson);
 	GameObject* CreateModelDataGameObject(json gameObjectJson, ModelData* modelData);
-	Material* GetMaterial(json materialJson, const char* textureLoc);
+	Material* GetMaterial(json materialJson);
 };
 

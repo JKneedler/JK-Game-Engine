@@ -27,10 +27,11 @@ class AssetLoader {
 public:
 	AssetLoader(AssetCache* assetCache);
 
-	void Initialize(const char* textureMapLoc, const char* shaderMapLoc, const char* modelMapLoc);
+	void Initialize(const char* textureMapLoc, const char* shaderMapLoc, const char* modelMapLoc, const char* materialMapLoc);
 
 	Texture* LoadTexture(const char* textureKey);
 	Shader* LoadShader(const char* shaderKey);
+	Material* LoadMaterial(const char* materialKey);
 	ModelData* LoadModelData(const char* modelKey);
 
 	~AssetLoader();
@@ -44,13 +45,15 @@ private:
 	std::string baseShaderFolder;
 	std::map < std::string, std::string> modelMap;
 	std::string baseModelFolder;
+	std::map<std::string, std::string> materialMap;
 
 	void CreateTextureAssetMap(const char* textureMapLoc);
 	void CreateShaderAssetMap(const char* shaderMapLoc);
 	void CreateModelAssetMap(const char* modelMapLoc);
+	void CreateMaterialAssetMap(const char* materialMapLoc);
 
 	ModelData* LoadModelNode(ModelData* modelParent, aiNode* node, const aiScene* scene, const char* modelKey);
 	MeshData* LoadNodeMesh(aiMesh* mesh, const aiScene* scene, const char* modelKey);
-	std::string GetMeshTexture(int materialNum, const aiScene* scene, const char* modelKey);
+	//std::string GetMeshTexture(int materialNum, const aiScene* scene, const char* modelKey);
 };
 
