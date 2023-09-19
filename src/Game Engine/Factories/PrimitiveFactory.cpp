@@ -50,3 +50,7 @@ void PrimitiveFactory::calcAverageNormals(unsigned int* indices, unsigned int in
 		vertices[nOffset] = vec.x; vertices[nOffset + 1] = vec.y; vertices[nOffset + 2] = vec.z;
 	}
 }
+
+Mesh* PrimitiveFactory::CreateIcoSphere(unsigned int subdivisions) {
+	return nullptr;
+}
