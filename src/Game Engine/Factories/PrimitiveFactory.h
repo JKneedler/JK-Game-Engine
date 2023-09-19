@@ -26,6 +26,8 @@ private:
 	void calcAverageNormals(unsigned int* indices, unsigned int indiceCount, GLfloat* vertices, unsigned int verticeCount,
 		unsigned int vLength, unsigned int normalOffset);
 
+	Mesh* CreateIcoSphere(unsigned int subdivisions);
+
 	GLfloat pyramidVertices[32] = {
 		//   x		y	  z			u	  v			nx	  ny    nz
 			-1.0f, -1.0f, -0.6f,	0.0f, 0.0f,		0.0f, 0.0f, 0.0f,
