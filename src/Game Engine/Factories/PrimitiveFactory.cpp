@@ -2,6 +2,7 @@
 
 PrimitiveFactory::PrimitiveFactory() {
 	calcAverageNormals(pyramidIndices, 12, pyramidVertices, 32, 8, 5);
+	calcAverageNormals(cubeIndices, 36, cubeVertices, 112, 8, 5);
 	//calcAverageNormals(floorIndices , 12, floorVertices, 32, 8, 5);
 }
 
@@ -15,7 +16,7 @@ Mesh* PrimitiveFactory::CreatePrimitive(PRIMITIVES type) {
 			primitiveMesh->CreateMesh(pyramidVertices, pyramidIndices, 32, 12);
 			break;
 		case PRIMITIVES::CUBE:
-			primitiveMesh->CreateMesh(pyramidVertices, pyramidIndices, 32, 12);
+			primitiveMesh->CreateMesh(cubeVertices, cubeIndices, 112, 36);
 			break;
 		default:
 			primitiveMesh->CreateMesh(floorVertices, floorIndices, 32, 6);
