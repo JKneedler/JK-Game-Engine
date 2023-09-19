@@ -54,7 +54,7 @@ Scene* SceneLoader::LoadScene(std::string sceneName) {
 
 void SceneLoader::CreateCamera(json cameraJson, Scene& scene) {
 	glm::mat4 projection = glm::perspective(glm::radians(cameraJson["FieldOfViewY"].get<GLfloat>()), (GLfloat)engine->getWindowM()->getBufferWidth() / (GLfloat)engine->getWindowM()->getBufferHeight(), cameraJson["Near"].get<GLfloat>(), cameraJson["Far"].get<GLfloat>());
-	Camera* camera = new Camera(cameraJson["StartMoveSpeed"], cameraJson["StartTurnSpeed"], projection);
+	Camera* camera = new Camera(projection);
 	scene.SetCamera(camera);
 
 	GameObject* cameraObj = new GameObject(camera);
