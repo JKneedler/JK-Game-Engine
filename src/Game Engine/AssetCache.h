@@ -22,11 +22,12 @@ class AssetCache {
 public:
 	AssetCache();
 
-	void Initialize(const char* textureMapLoc, const char* shaderMapLoc, const char* modelMapLoc);
+	void Initialize(const char* textureMapLoc, const char* shaderMapLoc, const char* modelMapLoc, const char* materialMapLoc);
 
 	Texture* LoadTexture(const char* textureKey);
 	Shader* LoadShader(const char* shaderKey);
 	ModelData* LoadModelData(const char* modelKey);
+	Material* LoadMaterial(const char* materialKey);
 
 	~AssetCache();
 
@@ -36,5 +37,6 @@ private:
 	std::map<std::string, Texture*> textureMap;
 	std::map<std::string, Shader*> shaderMap;
 	std::map<std::string, ModelData*> modelMap;
+	std::map<std::string, Material*> materialMap;
 };
 

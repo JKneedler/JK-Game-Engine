@@ -160,17 +160,17 @@ void SceneLoader::CreateSkybox(json skyboxJson, Scene& scene) {
 void SceneLoader::CreateGameObjects(json gameObjectsJson, Scene& scene) {
 	for (auto it : gameObjectsJson.items()) {
 		std::cout << "Creating {" << it.key() << "}" << std::endl;
-		GameObject* gameObject = CreateGameObject(it.value());
+		GameObject* gameObject = CreateGameObject(it.key().c_str(), it.value());
 		scene.AddGameObject(gameObject);
 	}
 }
 
-GameObject* SceneLoader::CreateGameObject(json gameObjectJson) {
+GameObject* SceneLoader::CreateGameObject(const char* goName, json gameObjectJson) {
 	GameObject* gameObject = nullptr;
-	if (gameObjectJson["Mesh"]["Primitive"] != "") {
+	if (gameObjectJson["Mesh"].contains("Primitive")) {
 		gameObject = CreatePrimitiveGameObject(gameObjectJson);
 	}
-	else if (gameObjectJson["Mesh"]["Model"] != "") {
+	else if (gameObjectJson["Mesh"].contains("Model")) {
 		// Add model support
 		std::string modelName = gameObjectJson["Mesh"]["Model"].get<std::string>();
 		ModelData* modelData = assetCache->LoadModelData(modelName.c_str());
@@ -178,10 +178,11 @@ GameObject* SceneLoader::CreateGameObject(json gameObjectJson) {
 	}
 	else {
 		// Fill in a default
+		std::cout << "No model or primitive given, skipping " << goName << std::endl;
 	}
 
 	for (auto it : gameObjectJson["Children"].items()) {
-		GameObject* child = CreateGameObject(it.value());
+		GameObject* child = CreateGameObject(it.key().c_str(), it.value());
 		gameObject->AddChild(child);
 	}
 
@@ -191,7 +192,7 @@ GameObject* SceneLoader::CreateGameObject(json gameObjectJson) {
 GameObject* SceneLoader::CreatePrimitiveGameObject(json gameObjectJson) {
 	int primitiveNum = std::stoi(gameObjectJson["Mesh"]["Primitive"].get<std::string>());
 	Mesh* mesh = engine->getPrimitiveF()->CreatePrimitive(static_cast<PRIMITIVES>(primitiveNum));
-	Material* material = GetMaterial(gameObjectJson["Material"], "");
+	Material* material = GetMaterial(gameObjectJson["Material"]);
 
 	std::vector<Mesh*> meshes = std::vector<Mesh*>();
 	meshes.push_back(mesh);
@@ -226,7 +227,7 @@ GameObject* SceneLoader::CreateModelDataGameObject(json gameObjectJson, ModelDat
 			mesh->CreateMesh(&meshData->vertices[0], &meshData->indices[0], meshData->vertices.size(), meshData->indices.size());
 			meshes.push_back(mesh);
 
-			Material* material = GetMaterial(gameObjectJson["Material"], meshData->texture.c_str());
+			Material* material = GetMaterial(gameObjectJson["Material"]);
 			materials.push_back(material);
 		}
 
@@ -251,18 +252,22 @@ GameObject* SceneLoader::CreateModelDataGameObject(json gameObjectJson, ModelDat
 	return gameObject;
 }
 
-Material* SceneLoader::GetMaterial(json materialJson, const char* textureLoc) {
-	Shader* shader = assetCache->LoadShader(materialJson["Shader"].get<std::string>().c_str());
-	Texture* texture = nullptr;
-	if ((textureLoc != NULL) && (textureLoc[0] == '\0')) {
-		texture = assetCache->LoadTexture(materialJson["Texture"].get<std::string>().c_str());
+Material* SceneLoader::GetMaterial(json materialJson) {
+	Material* mat = nullptr;
+	if (materialJson.contains("Stock")) {
+		mat = assetCache->LoadMaterial(materialJson["Stock"].get<std::string>().c_str());
+	}
+	else if (materialJson.contains("Custom")) {
+		Shader* shader = assetCache->LoadShader(materialJson["Custom"]["shader"].get<std::string>().c_str());
+		Texture* texture = assetCache->LoadTexture(materialJson["Custom"]["texture"].get<std::string>().c_str());
+		GLfloat specularIntensity = materialJson["specular_Intensity"].get<GLfloat>();
+		GLfloat shine = materialJson["shine"].get<GLfloat>();
+		mat = new Material(shader, texture, specularIntensity, shine);
 	}
 	else {
-		std::cout << "Texture Loc : {" << textureLoc << "}" << std::endl;
-		texture = new Texture(textureLoc);
+		std::cout << "No material specified for object in scene config, using default material." << std::endl;
+		mat = assetCache->LoadMaterial("Default Dull");
 	}
-	texture->LoadTexture();
-	GLfloat specularIntensity = materialJson["Specular_Intensity"].get<GLfloat>();
-	GLfloat shine = materialJson["Shine"].get<GLfloat>();
-	return new Material(shader, texture, specularIntensity, shine);
+
+	return mat;
 }
