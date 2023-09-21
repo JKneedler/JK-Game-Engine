@@ -42,7 +42,7 @@ Scene* SceneLoader::LoadScene(std::string sceneName) {
 		CreatePointLights(j["Lights"]["PointLights"], *scene);
 		CreateSpotLights(j["Lights"]["SpotLights"], *scene);
 		CreateSkybox(j["Skybox"], *scene);
-		CreateGameObjects(j["GameObjects"], *scene);
+		AddObjects(j["GameObjects"], *scene);
 		
 	}
 	else {
@@ -157,15 +157,14 @@ void SceneLoader::CreateSkybox(json skyboxJson, Scene& scene) {
 	scene.SetSkybox(skybox);
 }
 
-void SceneLoader::CreateGameObjects(json gameObjectsJson, Scene& scene) {
+void SceneLoader::AddObjects(json gameObjectsJson, Scene& scene) {
 	for (auto it : gameObjectsJson.items()) {
 		std::cout << "Creating {" << it.key() << "}" << std::endl;
-		GameObject* gameObject = CreateGameObject(it.key().c_str(), it.value());
-		scene.AddGameObject(gameObject);
+		AddGameObject(it.key().c_str(), it.value(), scene);
 	}
 }
 
-GameObject* SceneLoader::CreateGameObject(const char* goName, json gameObjectJson) {
+GameObject* SceneLoader::AddGameObject(const char* goName, json gameObjectJson, Scene& scene) {
 	GameObject* gameObject = nullptr;
 	if (gameObjectJson["Mesh"].contains("Primitive")) {
 		gameObject = CreatePrimitiveGameObject(gameObjectJson);
@@ -181,11 +180,14 @@ GameObject* SceneLoader::CreateGameObject(const char* goName, json gameObjectJso
 		std::cout << "No model or primitive given, skipping " << goName << std::endl;
 	}
 
-	for (auto it : gameObjectJson["Children"].items()) {
-		GameObject* child = CreateGameObject(it.key().c_str(), it.value());
-		gameObject->AddChild(child);
-	}
+	if (gameObject != nullptr) {
+		for (auto it : gameObjectJson["Children"].items()) {
+			GameObject* child = AddGameObject(it.key().c_str(), it.value(), scene);
+			gameObject->transform->AddChild(child->transform);
+		}
 
+		scene.AddGameObject(gameObject);
+	}
 	return gameObject;
 }
 
@@ -236,7 +238,7 @@ GameObject* SceneLoader::CreateModelDataGameObject(json gameObjectJson, ModelDat
 
 	for (size_t i = 0; i < modelData->children.size(); i++) {
 		GameObject* gameObjectChild = CreateModelDataGameObject(gameObjectJson, modelData->children[i]);
-		gameObject->AddChild(gameObjectChild);
+		gameObject->transform->AddChild(gameObjectChild->transform);
 	}
 
 	std::vector<GLfloat> startPosition = gameObjectJson["Position"];

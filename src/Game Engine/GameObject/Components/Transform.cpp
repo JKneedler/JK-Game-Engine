@@ -1,4 +1,5 @@
 #include "Transform.h"
+#include <iostream>
 
 Transform::Transform() : BaseComponent() {
 	position = glm::vec3(0.0f);
@@ -58,14 +59,64 @@ void Transform::Update() {
 }
 
 void Transform::SetModel(GLuint uniformModel) {
-	model = glm::mat4(1.0f);
-	model = glm::translate(model, position);
-	model = model * glm::toMat4(rotation);
-	model = glm::scale(model, scale);
+	model = GetTransformMatrix();
 
 	glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 }
 
+glm::mat4 Transform::GetTransformMatrix() {
+	glm::mat4 transformMatrix = glm::mat4(1.0f);
+	transformMatrix = glm::translate(transformMatrix, position);
+	transformMatrix = transformMatrix * glm::toMat4(rotation);
+	transformMatrix = glm::scale(transformMatrix, scale);
+
+	if (parent != nullptr) {
+		glm::mat4 parentMatrix = parent->GetTransformMatrix();
+		transformMatrix = parentMatrix * transformMatrix;
+	}
+
+	return transformMatrix;
+}
+
+void Transform::AddChild(Transform* newChild) {
+	children.push_back(newChild);
+	newChild->SetParent(this);
+}
+
+Transform* Transform::RemoveChild(unsigned int childNum) {
+	Transform* childRemoved = nullptr;
+	if (children.size() >= childNum) {
+		childRemoved = children[childNum];
+		childRemoved->DetachFromParent();
+
+		children.erase(children.begin()+childNum);
+	}
+
+	return childRemoved;
+}
+
+void Transform::RemoveChildren() {
+	for (auto child : children) {
+		child->DetachFromParent();
+	}
+
+	children.clear();
+}
+
+void Transform::DetachFromParent() {
+	glm::vec3 skew = glm::vec3(1.0f);
+	glm::vec4 perspective = glm::vec4(1.0f);
+	
+	glm::mat4 matrix = GetTransformMatrix();
+	glm::decompose(matrix, scale, rotation, position, skew, perspective);
+
+	parent = nullptr;
+}
+
+// TODO : Need to figure out how these manipulations work for the children
+//			Specifically how the hell does scale work
+//			Rotation should work by rotating around the axis located at the origin
+//			LOOK UP COMBINED TRANSFORMATION MATRIX
 void Transform::SetPosition(glm::vec3 newPos) {
 	position.x = newPos.x;
 	position.y = newPos.y;
@@ -83,6 +134,20 @@ void Transform::SetRotation(glm::quat newRot) {
 	rotation.y = newRot.y;
 	rotation.z = newRot.z;
 	rotation.w = newRot.w;
+}
+
+void Transform::SetParent(Transform* newParent) {
+	glm::mat4 matrix = GetTransformMatrix();
+	glm::mat4 newParentMatrix = newParent->GetTransformMatrix();
+
+	glm::mat4 relativeMatrix = glm::inverse(newParentMatrix) * matrix;
+
+	glm::vec3 skew = glm::vec3(1.0f);
+	glm::vec4 perspective = glm::vec4(1.0f);
+
+	glm::decompose(relativeMatrix, scale, rotation, position, skew, perspective);
+
+	parent = newParent;
 }
 
 void Transform::Translate(glm::vec3 translation) {

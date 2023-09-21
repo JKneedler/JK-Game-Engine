@@ -2,11 +2,14 @@
 
 #include <GL/glew.h>
 
+#include <vector>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/matrix_decompose.hpp>
 
 #include "../BaseComponent.h"
 
@@ -25,6 +28,14 @@ public:
     void Update();
 
     void SetModel(GLuint uniformModel);
+    glm::mat4 GetTransformMatrix();
+
+    void AddChild(Transform* newChild);
+    Transform* RemoveChild(unsigned int childNum);
+    void RemoveChildren();
+
+    void DetachFromParent();
+    void SetParent(Transform* newParent);
 
     glm::vec3 getPosition() { return position; }
     glm::quat getRotation() { return rotation; }
@@ -37,6 +48,7 @@ public:
     void SetPosition(glm::vec3 newPos);
     void SetScale(glm::vec3 newScale);
     void SetRotation(glm::quat newRot);
+
 
     void Translate(glm::vec3 translation);
     void Translate(AXIS axis, float distance);
@@ -59,5 +71,8 @@ private:
     glm::vec3 worldUp;
 
     glm::mat4 model;
-};
 
+    std::vector<Transform*> children;
+    Transform* parent = nullptr;
+
+};
