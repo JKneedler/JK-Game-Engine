@@ -24,9 +24,6 @@ void Scene::AddMesh(GameObject* newObj) {
 		MeshRenderer* meshRenderer = (MeshRenderer*)newObj->GetComponent(TYPES::MESH_RENDERER);
 		meshList.push_back(meshRenderer);
 	}
-	for (size_t i = 0; i < newObj->children.size(); i++) {
-		AddMesh(newObj->children[i]);
-	}
 }
 
 void Scene::AddDirectionalLight(DirectionalLight* directLight) {

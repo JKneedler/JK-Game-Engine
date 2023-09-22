@@ -25,18 +25,12 @@ void GameObject::Initialize() {
 	for (size_t i = 0; i < components.size(); i++) {
 		components[i]->Initialize();
 	}
-	for (size_t i = 0; i < children.size(); i++) {
-		children[i]->Initialize();
-	}
 }
 
 void GameObject::Start() {
 	transform->Start();
 	for (size_t i = 0; i < components.size(); i++) {
 		components[i]->Start();
-	}
-	for (size_t i = 0; i < children.size(); i++) {
-		children[i]->Start();
 	}
 }
 
@@ -45,26 +39,17 @@ void GameObject::Update() {
 	for (size_t i = 0; i < components.size(); i++) {
 		components[i]->Update();
 	}
-	for (size_t i = 0; i < children.size(); i++) {
-		children[i]->Update();
-	}
 }
 
 void GameObject::Render() {
 	for (size_t i = 0; i < components.size(); i++) {
 		components[i]->Render();
 	}
-	for (size_t i = 0; i < children.size(); i++) {
-		children[i]->Render();
-	}
 }
 
 void GameObject::Render(Shader* shader) {
 	for (size_t i = 0; i < components.size(); i++) {
 		components[i]->Render(shader);
-	}
-	for (size_t i = 0; i < children.size(); i++) {
-		children[i]->Render(shader);
 	}
 }
 
@@ -93,10 +78,6 @@ void* GameObject::GetComponent(TYPES type) {
 
 bool GameObject::NeedToDelete() {
 	return toBeDeleted;
-}
-
-void GameObject::AddChild(GameObject* child) {
-	children.push_back(child);
 }
 
 GameObject::~GameObject() {

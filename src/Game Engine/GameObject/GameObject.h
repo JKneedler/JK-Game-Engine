@@ -25,13 +25,9 @@ public:
 	bool HasComponent(TYPES type);
 	void* GetComponent(TYPES type);
 
-	void AddChild(GameObject* child);
-
 	bool NeedToDelete();
 
 	Transform* transform;
-	std::vector<GameObject*> children;
-	GameObject* parent;
 
 	~GameObject();
 

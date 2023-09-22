@@ -16,17 +16,12 @@ class Camera :
 
 public:
 	Camera();
-	Camera(GLfloat startMoveSpeed, GLfloat startTurnSpeed, glm::mat4 startProjection);
+	Camera(glm::mat4 startProjection);
 
 	void Initialize();
 	void Start();
 
 	void Update();
-
-	//Temporary methods
-	void Turn(GLfloat xChange, GLfloat yChange);
-	void MoveForwardBackward(float amt);
-	void MoveRightLeft(float amt);
 
 	TYPES GetType() { return CAMERA; };
 
@@ -43,8 +38,6 @@ public:
 private:
 	glm::mat4 projection;
 	glm::vec3 position, front, up;
-
-	GLfloat moveSpeed, turnSpeed;
 
 };
 

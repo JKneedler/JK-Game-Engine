@@ -51,6 +51,7 @@ void EngineManager::Update() {
 
 	engine->getTimeM()->UpdateDeltaTime();
 
+	input->CycleKeys();
 	glfwPollEvents();
 
 	engine->sceneManager->Update();

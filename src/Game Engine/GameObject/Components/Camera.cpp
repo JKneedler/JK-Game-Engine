@@ -4,11 +4,8 @@ Camera* Camera::mainCamera{ nullptr };
 
 Camera:: Camera() : BaseComponent() { }
 
-Camera::Camera(GLfloat startMoveSpeed, GLfloat startTurnSpeed, glm::mat4 startProjection) : BaseComponent() {
+Camera::Camera(glm::mat4 startProjection) : BaseComponent() {
 	projection = startProjection;
-
-	moveSpeed = startMoveSpeed;
-	turnSpeed = startTurnSpeed;
 
 }
 
@@ -20,27 +17,6 @@ void Camera::Start() {
 
 void Camera::Update() {
 	
-}
-
-void Camera::Turn(GLfloat xChange, GLfloat yChange) {
-	// Process Mouse movement
-	xChange *= turnSpeed;
-	yChange *= turnSpeed;
-
-	gameObject->transform->Rotate(-xChange, AXIS::WORLD_Y);
-	gameObject->transform->Rotate(-yChange, AXIS::LOCAL_RIGHT);
-
-	// Add Constraints
-}
-
-void Camera::MoveForwardBackward(float amt) {
-	GLfloat velocity = moveSpeed * amt;
-	gameObject->transform->Translate(AXIS::LOCAL_FORWARD, velocity);
-}
-
-void Camera::MoveRightLeft(float amt) {
-	GLfloat velocity = moveSpeed * amt;
-	gameObject->transform->Translate(AXIS::LOCAL_RIGHT, velocity);
 }
 
 glm::mat4 Camera::calculateViewMatrix() {
