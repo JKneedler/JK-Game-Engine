@@ -17,6 +17,7 @@ class SceneLoader;
 #include "json.hpp"
 #include "ModelData.h"
 #include "MeshData.h"
+#include "GameObject/Components/BoxCollider.h"
 
 using json = nlohmann::json;
 
@@ -45,6 +46,7 @@ private:
 	GameObject* AddGameObject(const char* goName, json gameObjectsJson, Scene& scene);
 	GameObject* CreatePrimitiveGameObject(json gameObjectJson);
 	GameObject* CreateModelDataGameObject(json gameObjectJson, ModelData* modelData);
+	void AddCollider(json colliderJson, GameObject* gameObject);
 	Material* GetMaterial(json materialJson);
 };
 

@@ -34,3 +34,5 @@
 #include "Game Engine/ModelLoader.h"
 #include "Game Engine/ModelData.h"
 #include "Game Engine/MeshData.h"
+#include "Game Engine/GameObject/Components/BoxCollider.h"
+#include "Game Engine/Line.h"

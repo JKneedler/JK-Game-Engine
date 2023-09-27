@@ -12,8 +12,11 @@ void EngineManager::Initialize(GLint windowWidth, GLint windowHeight) {
 	engine->input = new Input(window->getWindow());
 	engine->sceneManager = new SceneManager();
 	engine->time = new Time();
+	engine->physics = new PhysicsManager();
 
 	engine->primitiveFactory = new PrimitiveFactory();
+
+	testLine = new Line(glm::vec3(0.5, 0.5, 0.5), glm::vec3(0.5, 0.5, -0.5));
 }
 
 Window* EngineManager::getWindowM() {
@@ -36,6 +39,10 @@ Scene* EngineManager::getCurrentScene() {
 	return getInstance()->sceneManager->getScene();
 }
 
+PhysicsManager* EngineManager::getPhysicsM() {
+	return getInstance()->physics;
+}
+
 PrimitiveFactory* EngineManager::getPrimitiveF() {
 	return getInstance()->primitiveFactory;
 }
@@ -51,6 +58,8 @@ void EngineManager::Update() {
 
 	engine->getTimeM()->UpdateDeltaTime();
 
+	physics->CheckForCollisions();
+
 	input->CycleKeys();
 	glfwPollEvents();
 
@@ -62,6 +71,16 @@ void EngineManager::Update() {
 	//Real Render
 	glViewport(0, 0, engine->getWindowM()->getBufferWidth(), engine->getWindowM()->getBufferHeight());
 	engine->sceneManager->Render();
+
+	physics->RenderBBs();
+
+	//glm::mat4 transformMatrix = glm::mat4(1.0f);
+	//transformMatrix = glm::translate(transformMatrix, glm::vec3(0, 0, 0));
+	//transformMatrix = transformMatrix * glm::toMat4(glm::quat(1.0f, 0.0f, 0.0f, 0.0f));
+	//transformMatrix = glm::scale(transformMatrix, glm::vec3(1, 1, 1));
+	//glm::mat4 mvp = Camera::mainCamera->getProjection() * Camera::mainCamera->calculateViewMatrix() * transformMatrix;
+	//testLine->setMVP(mvp);
+	//testLine->draw();
 
 	glUseProgram(0);
 
