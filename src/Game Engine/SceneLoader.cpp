@@ -186,6 +186,9 @@ GameObject* SceneLoader::AddGameObject(const char* goName, json gameObjectJson, 
 			gameObject->transform->AddChild(child->transform);
 		}
 
+		if (gameObjectJson.contains("Collider")) {
+			AddCollider(gameObjectJson["Collider"], gameObject);
+		}
 		scene.AddGameObject(gameObject);
 	}
 	return gameObject;
@@ -252,6 +255,15 @@ GameObject* SceneLoader::CreateModelDataGameObject(json gameObjectJson, ModelDat
 	gameObject->transform->SetScale(glm::vec3(startScale[0], startScale[1], startScale[2]));
 
 	return gameObject;
+}
+
+void SceneLoader::AddCollider(json colliderJson, GameObject* gameObject) {
+	if (colliderJson["Type"] == "BoxCollider") {
+		std::vector<GLfloat> origin = colliderJson["Origin"];
+		std::vector<GLfloat> scale = colliderJson["Scale"];
+		BoxCollider* collider = new BoxCollider(glm::vec3(origin[0], origin[1], origin[2]), glm::vec3(scale[0], scale[1], scale[2]));
+		gameObject->AddComponent(collider);
+	}
 }
 
 Material* SceneLoader::GetMaterial(json materialJson) {

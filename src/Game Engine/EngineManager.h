@@ -4,7 +4,9 @@
 #include "Input.h"
 #include "SceneManager.h"
 #include "Time.h"
+#include "PhysicsManager.h"
 #include "Factories/PrimitiveFactory.h"
+#include "Line.h"
 
 class EngineManager {
 
@@ -24,6 +26,7 @@ public:
 	static SceneManager* getSceneM();
 	static Time* getTimeM();
 	static Scene* getCurrentScene();
+	static PhysicsManager* getPhysicsM();
 
 	static PrimitiveFactory* getPrimitiveF();
 
@@ -36,9 +39,12 @@ public:
 	Input* input;
 	SceneManager* sceneManager;
 	Time* time;
+	PhysicsManager* physics;
 	
 	PrimitiveFactory* primitiveFactory;
 
 private:
+
+	Line* testLine;
 };
 

@@ -17,6 +17,9 @@ void Scene::SetLights(Shader* shader) {
 void Scene::AddGameObject(GameObject* newObj) {
 	objectList.push_back(newObj);
 	AddMesh(newObj);
+	if (newObj->HasComponent(BOX_COLLIDER)) {
+		EngineManager::getPhysicsM()->AddCollider((Collider*)newObj->GetComponent(BOX_COLLIDER));
+	}
 }
 
 void Scene::AddMesh(GameObject* newObj) {
